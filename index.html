@@ -3,1210 +3,1035 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recuperação de Vendas — Frendz</title>
+<title>Frendz Recovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.14.0/dist/tabler-icons.min.css">
 <style>
-  :root {
-    --bg: #f4f5f7;
-    --surface: #ffffff;
-    --surface2: #f9fafb;
-    --border: rgba(0,0,0,0.10);
-    --border2: rgba(0,0,0,0.18);
-    --text: #1a1a1a;
-    --text2: #5f6368;
-    --text3: #9aa0a6;
-    --accent: #7f77dd;
-    --accent-bg: #eeedfe;
-    --accent-text: #3c3489;
-    --danger: #e24b4a;
-    --danger-bg: #fcebeb;
-    --danger-text: #791f1f;
-    --warning: #ef9f27;
-    --warning-bg: #faeeda;
-    --warning-text: #633806;
-    --success: #1d9e75;
-    --success-bg: #e1f5ee;
-    --success-text: #085041;
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+:root {
+  --bg: #111113;
+  --bg2: #18181c;
+  --bg3: #1f1f24;
+  --bg4: #27272e;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --text: #f2f2f5;
+  --text2: #8a8a9a;
+  --text3: #52526a;
+  --accent: #38c8f0;
+  --accent2: #5dd3f5;
+  --accent-bg: rgba(56,200,240,0.08);
+  --accent-border: rgba(56,200,240,0.25);
+  --success: #22c98a;
+  --success-bg: rgba(34,201,138,0.08);
+  --warning: #f5a623;
+  --warning-bg: rgba(245,166,35,0.08);
+  --danger: #f05252;
+  --danger-bg: rgba(240,82,82,0.08);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; min-height: 100vh; }
 
-  .layout { display: flex; height: 100vh; overflow: hidden; }
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active { display: flex; }
 
-  /* Sidebar */
-  .sidebar { width: 220px; background: var(--surface); border-right: 0.5px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
-  .sidebar-brand { padding: 18px 16px 14px; border-bottom: 0.5px solid var(--border); }
-  .sidebar-brand .logo { font-weight: 600; font-size: 15px; color: var(--accent); letter-spacing: -0.3px; }
-  .sidebar-brand .sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-  .sidebar-nav { padding: 8px 0; flex: 1; overflow-y: auto; }
-  .nav-section { padding: 14px 16px 4px; font-size: 10px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.12s; border-radius: 0; }
-  .nav-item:hover { background: var(--bg); color: var(--text); }
-  .nav-item.active { background: var(--accent-bg); color: var(--accent-text); font-weight: 500; }
-  .nav-item i { font-size: 16px; }
-  .nav-badge { margin-left: auto; background: var(--danger-bg); color: var(--danger-text); font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 20px; }
+/* ── AUTH ── */
+#screen-auth { min-height: 100vh; align-items: center; justify-content: center; background: var(--bg); position: relative; overflow: hidden; }
+#screen-auth::after { content: ''; position: absolute; width: 100%; height: 100%; 
+  background-image: linear-gradient(rgba(56,200,240,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,200,240,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(600px) rotateX(45deg) scale(2);
+  transform-origin: center top;
+  bottom: 0; pointer-events: none; }
+#screen-auth::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,200,240,0.08) 0%, transparent 70%); top: -100px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+.auth-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px; padding: 40px; width: 400px; position: relative; z-index: 1; }
+.auth-logo { text-align: center; margin-bottom: 32px; }
+.auth-logo .logo-mark { width: 48px; height: 48px; background: linear-gradient(135deg, #38c8f0, #1eb8e0); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 22px; }
+.auth-logo h1 { font-size: 20px; font-weight: 600; }
+.auth-logo p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.auth-tabs { display: flex; background: var(--bg3); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 28px; }
+.auth-tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+.auth-tab.active { background: var(--bg4); color: var(--text); }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 12px; color: var(--text2); font-weight: 500; margin-bottom: 6px; }
+.field input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 14px; color: var(--text); outline: none; font-family: inherit; transition: border-color 0.2s; }
+.field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56,200,240,0.08); }
+.field input::placeholder { color: var(--text3); }
+.btn-full { width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; font-family: inherit; }
+.btn-full:hover { background: #1eb8e0; }
+.auth-divider { text-align: center; color: var(--text3); font-size: 12px; margin: 20px 0; position: relative; }
+.auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+.auth-divider::before { left: 0; }
+.auth-divider::after { right: 0; }
+.plans-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 24px; }
+.plan-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.plan-card:hover, .plan-card.selected { border-color: #38c8f0; background: rgba(56,200,240,0.08); }
+.plan-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.plan-price { font-size: 18px; font-weight: 600; color: #38c8f0; }
+.plan-price span { font-size: 11px; font-weight: 400; color: var(--text2); }
+.plan-limit { font-size: 11px; color: var(--text2); margin-top: 4px; }
+.plan-card.selected .plan-limit { color: #5dd3f5; }
 
-  /* Main */
-  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-  .topbar { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-  .topbar-title { font-size: 15px; font-weight: 500; }
-  .topbar-actions { display: flex; align-items: center; gap: 10px; }
-  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); border: 0.5px solid var(--border2); background: var(--surface); color: var(--text); font-size: 13px; cursor: pointer; transition: background 0.12s; white-space: nowrap; }
-  .btn:hover { background: var(--bg); }
-  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .btn-primary:hover { background: #534ab7; }
-  .btn-sm { padding: 5px 10px; font-size: 12px; }
-  .btn-danger { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger); }
+/* ── ONBOARDING ── */
+#screen-onboarding { min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); padding: 40px 20px; }
+.onboard-wrap { width: 100%; max-width: 560px; }
+.onboard-steps { display: flex; align-items: center; gap: 8px; margin-bottom: 36px; justify-content: center; }
+.ostep { display: flex; align-items: center; gap: 8px; }
+.ostep-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+.ostep-dot.done { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+.ostep-dot.active { background: #38c8f0; border-color: #38c8f0; color: #0a1a1f; font-weight: 600; }
+.ostep-label { font-size: 12px; color: var(--text2); }
+.ostep-label.active { color: var(--text); font-weight: 500; }
+.ostep-line { flex: 1; height: 1px; background: var(--border); width: 32px; }
+.onboard-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px; padding: 36px; }
+.onboard-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.onboard-card p { font-size: 14px; color: var(--text2); margin-bottom: 28px; }
+.onboard-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; }
+.btn-primary { background: var(--accent); color: #0a1a1f; font-weight: 600; }
+.btn-primary:hover { background: #1eb8e0; }
+.btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { color: var(--text); border-color: var(--border2); background: var(--bg4); }
+.qr-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; text-align: center; }
+.qr-img { width: 160px; height: 160px; background: white; border-radius: 8px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+.qr-img svg { width: 130px; height: 130px; }
+.qr-status { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; }
+.qr-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warning); animation: pulse 1.5s ease-in-out infinite; }
+.qr-status .dot.connected { background: var(--success); animation: none; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.info-box { background: rgba(56,200,240,0.07); border: 1px solid rgba(56,200,240,0.2); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 12px; color: #5dd3f5; margin-top: 16px; line-height: 1.6; }
 
-  .content { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+/* ── APP LAYOUT ── */
+#screen-app { flex-direction: row; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; height: 100vh; position: sticky; top: 0; }
+.sidebar-top { padding: 20px 16px 16px; border-bottom: 1px solid var(--border); }
+.sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.sidebar-logo .mark { width: 32px; height: 32px; background: linear-gradient(135deg, #38c8f0, #1eb8e0); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.sidebar-logo .name { font-weight: 600; font-size: 15px; }
+.sidebar-logo .tagline { font-size: 11px; color: var(--text3); }
+.seller-pill { display: flex; align-items: center; gap: 8px; background: var(--bg3); border-radius: var(--radius-sm); padding: 8px 10px; cursor: pointer; }
+.seller-avatar { width: 28px; height: 28px; background: linear-gradient(135deg,#38c8f0,#1eb8e0); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.seller-name { font-size: 12px; font-weight: 500; flex: 1; }
+.seller-plan { font-size: 10px; color: #38c8f0; background: rgba(56,200,240,0.08); padding: 2px 7px; border-radius: 20px; }
+.sidebar-nav { padding: 12px 8px; flex: 1; overflow-y: auto; }
+.nav-group { margin-bottom: 20px; }
+.nav-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; padding: 0 8px; margin-bottom: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: rgba(56,200,240,0.08); color: #38c8f0; border: 1px solid rgba(56,200,240,0.2); }
+.nav-item i { font-size: 16px; }
+.nav-badge { margin-left: auto; background: var(--danger-bg); color: var(--danger); font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 20px; border: 1px solid rgba(240,82,82,0.2); }
+.sidebar-bottom { padding: 12px 8px; border-top: 1px solid var(--border); }
+.whatsapp-status { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg3); border-radius: var(--radius-sm); }
+.ws-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c98a; box-shadow: 0 0 6px rgba(34,201,138,0.5); flex-shrink: 0; }
+.ws-text { font-size: 12px; color: var(--text2); flex: 1; }
+.ws-inst { font-size: 10px; color: var(--text3); }
 
-  /* Cards */
-  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); }
-  .card-header { padding: 16px 20px 0; display: flex; align-items: center; justify-content: space-between; }
-  .card-title { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-  .card-title i { color: var(--text3); font-size: 16px; }
-  .card-body { padding: 16px 20px 20px; }
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 28px; height: 56px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 15px; font-weight: 600; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+.content { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
 
-  /* Configurações */
-  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label { font-size: 12px; color: var(--text2); font-weight: 500; }
-  .field input, .field select, .field textarea { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 13px; color: var(--text); outline: none; width: 100%; font-family: inherit; }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(127,119,221,0.12); }
-  .field textarea { resize: vertical; min-height: 72px; }
-  .field-full { grid-column: 1/-1; }
-  .field-hint { font-size: 11px; color: var(--text3); }
+/* ── VIEWS ── */
+[id^="view-"] { display: none; flex-direction: column; gap: 24px; }
+[id^="view-"].active { display: flex; }
 
-  /* Eventos */
-  .eventos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .evento-card { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; cursor: pointer; transition: border-color 0.12s, background 0.12s; position: relative; }
-  .evento-card:hover { border-color: var(--border2); background: var(--bg); }
-  .evento-card.on { border-color: var(--accent); background: var(--accent-bg); }
-  .evento-card.on .ev-icon { background: var(--accent); color: #fff; }
-  .ev-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 10px; transition: background 0.12s; }
-  .ev-titulo { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
-  .ev-desc { font-size: 11px; color: var(--text3); }
-  .ev-toggle { position: absolute; top: 12px; right: 12px; width: 32px; height: 18px; border-radius: 20px; background: var(--border); cursor: pointer; transition: background 0.2s; display: flex; align-items: center; padding: 2px; }
-  .ev-toggle.on { background: var(--accent); }
-  .ev-toggle::after { content: ''; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 0.2s; display: block; }
-  .ev-toggle.on::after { transform: translateX(14px); }
-  .ev-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; margin-top: 6px; }
-  .badge-pix { background: var(--warning-bg); color: var(--warning-text); }
-  .badge-card { background: var(--danger-bg); color: var(--danger-text); }
-  .badge-cart { background: var(--accent-bg); color: var(--accent-text); }
+/* ── CARDS ── */
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); }
+.card-header { padding: 18px 20px 0; display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text); }
+.card-title i { color: var(--text3); font-size: 16px; }
+.card-body { padding: 18px 20px 20px; }
 
-  /* Funis */
-  .funnel-list { display: flex; flex-direction: column; gap: 8px; }
-  .funnel-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); transition: border-color 0.12s; cursor: pointer; }
-  .funnel-item:hover { border-color: var(--border2); }
-  .funnel-item.selected { border-color: var(--accent); background: var(--accent-bg); }
-  .funnel-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
-  .funnel-dot.off { background: var(--text3); }
-  .funnel-info { flex: 1; }
-  .funnel-name { font-size: 13px; font-weight: 500; }
-  .funnel-meta { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .funnel-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
-  .tag { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; }
-  .tag-pix { background: var(--warning-bg); color: var(--warning-text); }
-  .tag-card { background: var(--danger-bg); color: var(--danger-text); }
-  .tag-cart { background: var(--accent-bg); color: var(--accent-text); }
-  .funnel-actions { display: flex; gap: 6px; }
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.stat { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
+.stat-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+.stat-value { font-size: 26px; font-weight: 600; }
+.stat-sub { font-size: 12px; color: var(--text3); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+.stat-up { color: var(--success); }
+.stat-down { color: var(--danger); }
 
-  /* Mensagens do funil */
-  .msg-timeline { display: flex; flex-direction: column; }
-  .msg-step { display: flex; gap: 14px; }
-  .msg-step-line { display: flex; flex-direction: column; align-items: center; }
-  .msg-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-bg); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--accent-text); flex-shrink: 0; }
-  .msg-connector { flex: 1; width: 1px; background: var(--border2); margin: 4px 0; min-height: 12px; }
-  .msg-content { flex: 1; padding-bottom: 16px; }
-  .msg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-  .msg-timing { font-size: 11px; color: var(--text3); }
-  .msg-bubble { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm); padding: 10px 12px; font-size: 13px; line-height: 1.55; color: var(--text); white-space: pre-wrap; }
-  .msg-vars { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-  .msg-var { font-size: 11px; color: var(--accent-text); background: var(--accent-bg); padding: 2px 8px; border-radius: 4px; font-family: monospace; cursor: pointer; }
-  .msg-var:hover { background: var(--accent); color: #fff; }
-  .msg-add { display: flex; align-items: center; gap: 10px; padding: 10px 0 0; }
-  .msg-add-btn { display: flex; align-items: center; gap: 6px; border: 1px dashed var(--border2); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 13px; color: var(--text3); cursor: pointer; background: transparent; transition: border-color 0.12s, color 0.12s; }
-  .msg-add-btn:hover { border-color: var(--accent); color: var(--accent-text); }
+/* ── EVENTOS ── */
+.eventos-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+.ev-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; cursor: pointer; transition: all 0.2s; position: relative; }
+.ev-card:hover { border-color: var(--border2); }
+.ev-card.on { border-color: rgba(56,200,240,0.25); background: rgba(56,200,240,0.06); }
+.ev-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.ev-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--bg4); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.ev-card.on .ev-icon { background: linear-gradient(135deg,#38c8f0,#1eb8e0); }
+.ev-toggle { width: 34px; height: 20px; border-radius: 20px; background: var(--bg4); border: 1px solid var(--border2); cursor: pointer; display: flex; align-items: center; padding: 2px; transition: background 0.2s; }
+.ev-toggle.on { background: #38c8f0; border-color: #38c8f0; }
+.ev-toggle::after { content: ''; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform 0.2s; display: block; }
+.ev-toggle.on::after { transform: translateX(14px); }
+.ev-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.ev-desc { font-size: 11px; color: var(--text3); line-height: 1.5; }
+.ev-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 8px; }
+.badge-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245,166,35,0.2); }
+.badge-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(240,82,82,0.2); }
+.badge-accent { background: var(--accent-bg); color: var(--accent2); border: 1px solid var(--accent-border); }
+.badge-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(34,201,138,0.2); }
 
-  /* Stats */
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .stat-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 14px 16px; }
-  .stat-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-  .stat-value { font-size: 22px; font-weight: 600; color: var(--text); margin-top: 4px; }
-  .stat-sub { font-size: 11px; color: var(--success); margin-top: 2px; }
+/* ── FUNIS ── */
+.funnel-list { display: flex; flex-direction: column; gap: 10px; }
+.funnel-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: border-color 0.2s; }
+.funnel-row:hover, .funnel-row.selected { border-color: rgba(56,200,240,0.25); background: rgba(56,200,240,0.06); }
+.funnel-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+.funnel-indicator.off { background: var(--text3); }
+.funnel-info { flex: 1; }
+.funnel-name { font-size: 13px; font-weight: 600; }
+.funnel-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.funnel-tags { display: flex; gap: 5px; margin-top: 6px; }
+.funnel-actions { display: flex; gap: 6px; }
 
-  /* Modal */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 100; }
-  .modal { background: var(--surface); border-radius: var(--radius); border: 0.5px solid var(--border2); width: 480px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; }
-  .modal-header { padding: 18px 20px 14px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .modal-title { font-size: 14px; font-weight: 500; }
-  .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
-  .modal-footer { padding: 14px 20px; border-top: 0.5px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
-  .modal-close { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 18px; display: flex; align-items: center; }
-  .modal-close:hover { color: var(--text); }
+/* ── TIMELINE ── */
+.timeline { display: flex; flex-direction: column; }
+.tl-step { display: flex; gap: 16px; }
+.tl-line { display: flex; flex-direction: column; align-items: center; }
+.tl-dot { width: 30px; height: 30px; border-radius: 50%; background: rgba(56,200,240,0.08); border: 2px solid #38c8f0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #38c8f0; flex-shrink: 0; }
+.tl-connector { flex: 1; width: 1px; background: var(--border2); margin: 4px 0; min-height: 16px; }
+.tl-body { flex: 1; padding-bottom: 20px; }
+.tl-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.tl-title { font-size: 12px; font-weight: 600; color: var(--text2); }
+.tl-timing { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+.tl-bubble { background: var(--bg3); border: 1px solid var(--border); border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm); padding: 12px 14px; font-size: 13px; line-height: 1.6; color: var(--text2); white-space: pre-wrap; }
+.tl-vars { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.tl-var { font-size: 11px; color: #38c8f0; background: rgba(56,200,240,0.08); padding: 2px 8px; border-radius: 4px; font-family: monospace; cursor: pointer; border: 1px solid var(--accent-border); }
+.tl-var:hover { background: #38c8f0; color: #0a1a1f; }
+.tl-add { display: flex; align-items: center; gap: 8px; padding: 10px 0 0; }
+.tl-add-btn { display: flex; align-items: center; gap: 6px; border: 1px dashed var(--border2); border-radius: var(--radius-sm); padding: 8px 16px; font-size: 12px; color: var(--text3); cursor: pointer; background: transparent; font-family: inherit; transition: all 0.2s; }
+.tl-add-btn:hover { border-color: #38c8f0; color: #38c8f0; }
 
-  /* Webhook */
-  .webhook-box { background: #1e1e2e; border-radius: var(--radius-sm); padding: 14px 16px; }
-  .webhook-url { font-family: monospace; font-size: 12px; color: #cdd6f4; word-break: break-all; }
-  .webhook-status { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
-  .ws-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
-  .ws-label { font-size: 12px; color: var(--success); }
+/* ── TABS ── */
+.tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 20px; }
+.tab { padding: 12px 16px; font-size: 13px; color: var(--text3); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+.tab.active { color: #38c8f0; border-bottom-color: #38c8f0; font-weight: 500; }
+.tab:hover:not(.active) { color: var(--text2); }
 
-  /* Log table */
-  .log-table { width: 100%; border-collapse: collapse; }
-  .log-table th { text-align: left; font-size: 11px; font-weight: 500; color: var(--text3); padding: 0 12px 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .log-table td { padding: 10px 12px; font-size: 13px; border-top: 0.5px solid var(--border); vertical-align: middle; }
-  .log-table tr:hover td { background: var(--bg); }
-  .status-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; }
-  .sb-enviado { background: var(--success-bg); color: var(--success-text); }
-  .sb-pendente { background: var(--warning-bg); color: var(--warning-text); }
-  .sb-erro { background: var(--danger-bg); color: var(--danger-text); }
+/* ── LOG TABLE ── */
+.log-table { width: 100%; border-collapse: collapse; }
+.log-table th { text-align: left; font-size: 11px; font-weight: 500; color: var(--text3); padding: 0 14px 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.log-table td { padding: 12px 14px; font-size: 13px; border-top: 1px solid var(--border); vertical-align: middle; color: var(--text2); }
+.log-table tr:hover td { background: var(--bg3); }
+.status-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
 
-  .hidden { display: none !important; }
-  .divider { height: 0.5px; background: var(--border); margin: 0 20px; }
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 200; backdrop-filter: blur(4px); }
+.modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 16px; width: 480px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; }
+.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-size: 15px; font-weight: 600; }
+.modal-body { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 18px; display: flex; align-items: center; padding: 4px; border-radius: 6px; }
+.modal-close:hover { background: var(--bg3); color: var(--text); }
 
-  /* Tabs */
-  .tabs { display: flex; gap: 0; border-bottom: 0.5px solid var(--border); padding: 0 20px; }
-  .tab { padding: 10px 14px; font-size: 13px; color: var(--text3); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -0.5px; transition: color 0.12s; }
-  .tab:hover { color: var(--text2); }
-  .tab.active { color: var(--accent-text); border-bottom-color: var(--accent); font-weight: 500; }
+/* ── MISC ── */
+.hidden { display: none !important; }
+.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
+.chip-waiting { background: var(--warning-bg); color: var(--warning); }
+.chip-refused { background: var(--danger-bg); color: var(--danger); }
+.chip-processing { background: var(--accent-bg); color: var(--accent2); }
+.chip-cancelled { background: rgba(255,255,255,0.05); color: var(--text3); }
+.empty-state { text-align: center; padding: 40px; color: var(--text3); }
+.empty-state i { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.3; }
+.sep { height: 1px; background: var(--border); margin: 0 -20px; }
 
-  .section-empty { text-align: center; padding: 32px; color: var(--text3); font-size: 13px; }
-  .section-empty i { font-size: 32px; display: block; margin-bottom: 8px; opacity: 0.4; }
+/* ── PRICING (dentro do app, para apresentação) ── */
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.price-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px; position: relative; }
+.price-card.featured { border-color: rgba(56,200,240,0.3); background: rgba(56,200,240,0.06); }
+.price-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg,#38c8f0,#1eb8e0); color: #fff; font-size: 10px; font-weight: 600; padding: 3px 12px; border-radius: 20px; white-space: nowrap; }
+.price-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.price-val { font-size: 32px; font-weight: 600; margin: 12px 0 4px; color: #38c8f0; }
+.price-val span { font-size: 13px; font-weight: 400; color: var(--text3); }
+.price-desc { font-size: 12px; color: var(--text3); margin-bottom: 16px; }
+.price-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.price-feature { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
+.price-feature i { color: var(--success); font-size: 14px; }
+.price-feature.dim { color: var(--text3); }
+.price-feature.dim i { color: var(--text3); }
+
+/* ── SETUP GUIDE ── */
+.guide-steps { display: flex; flex-direction: column; gap: 0; }
+.guide-step { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.guide-step:last-child { border-bottom: none; }
+.guide-num { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#38c8f0,#1eb8e0); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.guide-body h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.guide-body p { font-size: 12px; color: var(--text3); line-height: 1.6; }
+
+/* Overview chart placeholder */
+.chart-bar-wrap { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+.chart-bar { flex: 1; background: linear-gradient(to top, #1eb8e0, #38c8f0); border-radius: 4px 4px 0 0; opacity: 0.7; transition: opacity 0.2s; }
+.chart-bar:hover { opacity: 1; }
+.chart-labels { display: flex; gap: 6px; margin-top: 6px; }
+.chart-label { flex: 1; text-align: center; font-size: 10px; color: var(--text3); }
 </style>
 </head>
 <body>
 
-<div class="layout">
+<!-- ══════════════════════════════════════════
+     SCREEN 1: AUTH
+══════════════════════════════════════════ -->
+<div id="screen-auth" class="screen active">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-mark">⚡</div>
+      <h1 style="background:linear-gradient(90deg,#f2f2f5,#8a8a9a);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Frendz Recovery</h1>
+      <p>Recuperação de vendas automatizada</p>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="authTab('login',this)">Entrar</div>
+      <div class="auth-tab" onclick="authTab('register',this)">Criar conta</div>
+    </div>
 
-  <!-- Sidebar -->
+    <!-- LOGIN -->
+    <div id="form-login">
+      <div class="field"><label>E-mail</label><input type="email" placeholder="seuemail@empresa.com" value="joao@vendas.com"></div>
+      <div class="field"><label>Senha</label><input type="password" placeholder="••••••••" value="senha123"></div>
+      <button class="btn-full" style="color:#0a1a1f;font-weight:600" onclick="goTo('onboarding')">Entrar na plataforma</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="form-register" class="hidden">
+      <div class="field"><label>Nome completo</label><input type="text" placeholder="João Silva"></div>
+      <div class="field"><label>E-mail</label><input type="email" placeholder="seuemail@empresa.com"></div>
+      <div class="field"><label>Senha</label><input type="password" placeholder="Mínimo 8 caracteres"></div>
+      <div style="margin-bottom:20px">
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;font-weight:500">Escolha seu plano:</p>
+        <div class="plans-grid">
+          <div class="plan-card" onclick="selectPlan(this)">
+            <div class="plan-name">Starter</div>
+            <div class="plan-price">R$97<span>/mês</span></div>
+            <div class="plan-limit">1 WhatsApp · 3 funis</div>
+          </div>
+          <div class="plan-card selected" onclick="selectPlan(this)">
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">R$197<span>/mês</span></div>
+            <div class="plan-limit">3 WhatsApp · ilimitado</div>
+          </div>
+          <div class="plan-card" onclick="selectPlan(this)">
+            <div class="plan-name">Agency</div>
+            <div class="plan-price">R$497<span>/mês</span></div>
+            <div class="plan-limit">10 WhatsApp · multi-conta</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-full" style="color:#0a1a1f;font-weight:600" onclick="goTo('onboarding')">Criar conta e começar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 2: ONBOARDING
+══════════════════════════════════════════ -->
+<div id="screen-onboarding" class="screen">
+  <div class="onboard-wrap">
+    <div class="onboard-steps">
+      <div class="ostep">
+        <div class="ostep-dot active" id="step-dot-1">1</div>
+        <div class="ostep-label active" id="step-lbl-1">Conexão Frendz</div>
+      </div>
+      <div class="ostep-line"></div>
+      <div class="ostep">
+        <div class="ostep-dot" id="step-dot-2">2</div>
+        <div class="ostep-label" id="step-lbl-2">WhatsApp</div>
+      </div>
+      <div class="ostep-line"></div>
+      <div class="ostep">
+        <div class="ostep-dot" id="step-dot-3">3</div>
+        <div class="ostep-label" id="step-lbl-3">Primeiro funil</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Frendz token -->
+    <div id="onboard-step-1" class="onboard-card">
+      <h2>Conecte sua conta Frendz</h2>
+      <p>Cole o token de API da sua conta Frendz para começarmos a monitorar suas transações automaticamente.</p>
+      <div class="field"><label>Seu api_token da Frendz</label><input type="text" id="frendz-token-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+      <div class="info-box">
+        <strong>Onde encontrar:</strong> Frendz → Integrações → API → copie o token. A plataforma vai usar este token apenas para ler suas transações.
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-ghost" onclick="goTo('auth')">Sair</button>
+        <button class="btn btn-primary" onclick="nextStep(2)"><i class="ti ti-check"></i> Conectar e continuar</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: WhatsApp QR -->
+    <div id="onboard-step-2" class="onboard-card hidden">
+      <h2>Conecte seu WhatsApp</h2>
+      <p>Escaneie o QR Code com seu celular para ativar o envio automático de mensagens de recuperação.</p>
+      <div class="qr-box">
+        <div class="qr-img">
+          <svg viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="130" height="130" fill="white"/>
+            <rect x="10" y="10" width="40" height="40" fill="none" stroke="black" stroke-width="4"/>
+            <rect x="18" y="18" width="24" height="24" fill="black"/>
+            <rect x="80" y="10" width="40" height="40" fill="none" stroke="black" stroke-width="4"/>
+            <rect x="88" y="18" width="24" height="24" fill="black"/>
+            <rect x="10" y="80" width="40" height="40" fill="none" stroke="black" stroke-width="4"/>
+            <rect x="18" y="88" width="24" height="24" fill="black"/>
+            <rect x="80" y="80" width="10" height="10" fill="black"/>
+            <rect x="95" y="80" width="10" height="10" fill="black"/>
+            <rect x="110" y="80" width="10" height="10" fill="black"/>
+            <rect x="80" y="95" width="10" height="10" fill="black"/>
+            <rect x="95" y="95" width="25" height="10" fill="black"/>
+            <rect x="80" y="110" width="25" height="10" fill="black"/>
+            <rect x="110" y="110" width="10" height="10" fill="black"/>
+            <rect x="58" y="10" width="8" height="8" fill="black"/>
+            <rect x="58" y="24" width="8" height="8" fill="black"/>
+            <rect x="58" y="38" width="8" height="8" fill="black"/>
+            <rect x="58" y="58" width="8" height="8" fill="black"/>
+            <rect x="10" y="58" width="8" height="8" fill="black"/>
+            <rect x="24" y="58" width="8" height="8" fill="black"/>
+            <rect x="38" y="58" width="8" height="8" fill="black"/>
+          </svg>
+        </div>
+        <div class="qr-status" id="qr-status">
+          <div class="dot" id="qr-dot"></div>
+          <span id="qr-label">Aguardando leitura do QR Code...</span>
+        </div>
+        <p style="font-size:12px;color:var(--text3);margin-top:10px">Abra o WhatsApp → três pontos → Dispositivos conectados → Conectar dispositivo</p>
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-ghost" onclick="nextStep(1)">Voltar</button>
+        <button class="btn btn-primary" onclick="simulateQR()"><i class="ti ti-refresh"></i> Simular conexão</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Primeiro funil -->
+    <div id="onboard-step-3" class="onboard-card hidden">
+      <h2>Crie seu primeiro funil</h2>
+      <p>Configure qual evento vai disparar as mensagens de recuperação e em quanto tempo.</p>
+      <div class="field"><label>Nome do funil</label><input type="text" value="Recuperação — PIX não pago"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="field"><label>Evento gatilho</label>
+          <select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none">
+            <option>Aguardando pagamento</option><option>Recusado</option><option>Em processamento</option><option>Cancelado</option>
+          </select>
+        </div>
+        <div class="field"><label>Parar se pagar?</label>
+          <select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none">
+            <option>Sim — para automaticamente</option><option>Não</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box">✅ Tudo pronto! Após criar o funil você poderá adicionar as mensagens de recuperação e ativar a automação.
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-ghost" onclick="nextStep(2)">Voltar</button>
+        <button class="btn btn-primary" onclick="goTo('app')"><i class="ti ti-rocket"></i> Acessar painel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3: APP
+══════════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="logo">⚡ Frendz CRM</div>
-      <div class="sub">Recuperação de vendas</div>
+    <div class="sidebar-top">
+      <div class="sidebar-logo">
+        <div class="mark">⚡</div>
+        <div><div class="name" style="background:linear-gradient(90deg,#38c8f0,#5dd3f5);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Frendz Recovery</div></div>
+      </div>
+      <div class="seller-pill">
+        <div class="seller-avatar">J</div>
+        <div class="seller-name">João Silva</div>
+        <span class="seller-plan" style="color:#38c8f0;background:rgba(56,200,240,0.1);border:1px solid rgba(56,200,240,0.2)">Pro</span>
+      </div>
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-section">Painel</div>
-      <div class="nav-item active" onclick="setView('overview',this)">
-        <i class="ti ti-layout-dashboard"></i> Visão geral
+      <div class="nav-group">
+        <div class="nav-label">Painel</div>
+        <div class="nav-item active" onclick="navTo('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Visão geral</div>
       </div>
-      <div class="nav-section">Funis</div>
-      <div class="nav-item" onclick="setView('funis',this)">
-        <i class="ti ti-filter"></i> Meus funis
+      <div class="nav-group">
+        <div class="nav-label">Automação</div>
+        <div class="nav-item" onclick="navTo('funis',this)"><i class="ti ti-filter"></i> Funis de recuperação</div>
+        <div class="nav-item" onclick="navTo('eventos',this)"><i class="ti ti-bolt"></i> Eventos <span class="nav-badge">4</span></div>
       </div>
-      <div class="nav-item" onclick="setView('mensagens',this)">
-        <i class="ti ti-message-2"></i> Mensagens
+      <div class="nav-group">
+        <div class="nav-label">Histórico</div>
+        <div class="nav-item" onclick="navTo('logs',this)"><i class="ti ti-list-details"></i> Disparos</div>
       </div>
-      <div class="nav-section">Automações</div>
-      <div class="nav-item" onclick="setView('eventos',this)">
-        <i class="ti ti-bolt"></i> Eventos Frendz
-        <span class="nav-badge">3</span>
-      </div>
-      <div class="nav-item" onclick="setView('webhook',this)">
-        <i class="ti ti-webhook"></i> Webhook
-      </div>
-      <div class="nav-section">Histórico</div>
-      <div class="nav-item" onclick="setView('logs',this)">
-        <i class="ti ti-list-details"></i> Log de disparos
-      </div>
-      <div class="nav-section">Configurações</div>
-      <div class="nav-item" onclick="setView('config',this)">
-        <i class="ti ti-settings"></i> Credenciais API
+      <div class="nav-group">
+        <div class="nav-label">Conta</div>
+        <div class="nav-item" onclick="navTo('config',this)"><i class="ti ti-settings"></i> Configurações</div>
+        <div class="nav-item" onclick="navTo('planos',this)"><i class="ti ti-crown"></i> Planos</div>
+        <div class="nav-item" onclick="navTo('guia',this)"><i class="ti ti-book"></i> Como funciona</div>
       </div>
     </nav>
+    <div class="sidebar-bottom">
+      <div class="whatsapp-status">
+        <div class="ws-dot"></div>
+        <div><div class="ws-text">WhatsApp conectado</div><div class="ws-inst">recuperacao-joao</div></div>
+        <i class="ti ti-dots" style="color:var(--text3);cursor:pointer;font-size:16px"></i>
+      </div>
+    </div>
   </aside>
 
-  <!-- Main -->
+  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <span class="topbar-title" id="topbar-title">Visão geral</span>
-      <div class="topbar-actions">
-        <button class="btn btn-sm" id="btn-sync" onclick="syncFrendz()">
-          <i class="ti ti-refresh"></i> Sincronizar Frendz
-        </button>
-        <button class="btn btn-primary btn-sm" onclick="openModal('modal-novo-funil')">
-          <i class="ti ti-plus"></i> Novo funil
-        </button>
+      <div class="topbar-left">
+        <span class="topbar-title" id="topbar-title">Visão geral</span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-ghost btn-sm" onclick="syncData()"><i class="ti ti-refresh"></i> Sincronizar</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-funil')"><i class="ti ti-plus"></i> Novo funil</button>
       </div>
     </div>
 
     <div class="content">
 
-      <!-- VIEW: Visão geral -->
-      <div id="view-overview">
-        <div class="stats-row" style="margin-bottom: 4px;">
-          <div class="stat-card">
-            <div class="stat-label">Recuperados (7d)</div>
-            <div class="stat-value" id="stat-waiting">—</div>
-            <div class="stat-sub" id="stat-waiting-sub" style="color:var(--text3)">sincronize para ver</div>
+      <!-- ── DASHBOARD ── -->
+      <div id="view-dashboard" class="active" style="display:flex;flex-direction:column;gap:24px">
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-label">Recuperado (30d)</div>
+            <div class="stat-value">R$ 12.840</div>
+            <div class="stat-sub"><span class="stat-up"><i class="ti ti-trending-up"></i> +23%</span> vs mês anterior</div>
           </div>
-          <div class="stat-card">
+          <div class="stat">
             <div class="stat-label">Mensagens enviadas</div>
-            <div class="stat-value" id="stat-refused">—</div>
-            <div class="stat-sub" style="color: var(--text3);">últimos 7 dias</div>
+            <div class="stat-value">347</div>
+            <div class="stat-sub"><span class="stat-up"><i class="ti ti-trending-up"></i> +41</span> últimos 7 dias</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Taxa de resposta</div>
-            <div class="stat-value" id="stat-processing">—</div>
-            <div class="stat-sub">↑ 5% vs semana anterior</div>
+          <div class="stat">
+            <div class="stat-label">Taxa de conversão</div>
+            <div class="stat-value">28%</div>
+            <div class="stat-sub"><span class="stat-up"><i class="ti ti-trending-up"></i> +4pp</span> vs mês anterior</div>
           </div>
-          <div class="stat-card">
+          <div class="stat">
             <div class="stat-label">Funis ativos</div>
-            <div class="stat-value" id="stat-cancelled">—</div>
-            <div class="stat-sub" style="color: var(--text3);">de 4 cadastrados</div>
+            <div class="stat-value">3</div>
+            <div class="stat-sub" style="color:var(--text3)">de 4 configurados</div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-bolt"></i> Eventos ativos</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-chart-bar"></i> Recuperações por dia</span></div>
+            <div class="card-body">
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:30%"></div>
+                <div class="chart-bar" style="height:55%"></div>
+                <div class="chart-bar" style="height:40%"></div>
+                <div class="chart-bar" style="height:80%"></div>
+                <div class="chart-bar" style="height:65%"></div>
+                <div class="chart-bar" style="height:90%"></div>
+                <div class="chart-bar" style="height:70%"></div>
+              </div>
+              <div class="chart-labels">
+                <div class="chart-label">Seg</div><div class="chart-label">Ter</div><div class="chart-label">Qua</div>
+                <div class="chart-label">Qui</div><div class="chart-label">Sex</div><div class="chart-label">Sáb</div><div class="chart-label">Dom</div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="eventos-grid">
-              <div class="evento-card on" onclick="toggleEvento(this)">
-                <div class="ev-toggle on" onclick="event.stopPropagation(); this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-clock-pause"></i></div>
-                <div class="ev-titulo">Aguardando pagamento</div>
-                <div class="ev-desc">PIX gerado ou boleto emitido aguardando confirmação do pagador</div>
-                <span class="ev-badge badge-pix">waiting</span>
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-bolt"></i> Eventos monitorados</span></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="chip chip-waiting">waiting</span>
+                <span style="font-size:13px;flex:1;color:var(--text2)">Aguardando pagamento</span>
+                <span style="font-size:13px;font-weight:600">142</span>
               </div>
-              <div class="evento-card on" onclick="toggleEvento(this)">
-                <div class="ev-toggle on" onclick="event.stopPropagation(); this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-credit-card-off"></i></div>
-                <div class="ev-titulo">Recusado</div>
-                <div class="ev-desc">Cartão recusado pela operadora — refuse_reason preenchido na transação</div>
-                <span class="ev-badge badge-card">refused</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="chip chip-refused">refused</span>
+                <span style="font-size:13px;flex:1;color:var(--text2)">Recusado</span>
+                <span style="font-size:13px;font-weight:600">89</span>
               </div>
-              <div class="evento-card on" onclick="toggleEvento(this)">
-                <div class="ev-toggle on" onclick="event.stopPropagation(); this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-loader"></i></div>
-                <div class="ev-titulo">Em processamento</div>
-                <div class="ev-desc">Pagamento enviado mas ainda não confirmado pelo gateway</div>
-                <span class="ev-badge badge-cart">processing</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="chip chip-processing">processing</span>
+                <span style="font-size:13px;flex:1;color:var(--text2)">Em processamento</span>
+                <span style="font-size:13px;font-weight:600">54</span>
               </div>
-              <div class="evento-card" onclick="toggleEvento(this)">
-                <div class="ev-toggle" onclick="event.stopPropagation(); this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-ban"></i></div>
-                <div class="ev-titulo">Cancelado</div>
-                <div class="ev-desc">Transação cancelada antes da confirmação do pagamento</div>
-                <span class="ev-badge badge-card">cancelled</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="chip chip-cancelled">cancelled</span>
+                <span style="font-size:13px;flex:1;color:var(--text2)">Cancelado</span>
+                <span style="font-size:13px;font-weight:600">62</span>
               </div>
             </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-list-details"></i> Últimos disparos</span>
-            <button class="btn btn-sm" onclick="setView('logs',this)">Ver todos</button>
-          </div>
-          <div class="card-body" style="padding-top: 8px;">
+          <div class="card-header"><span class="card-title"><i class="ti ti-clock"></i> Últimos disparos</span><button class="btn btn-ghost btn-sm" onclick="navTo('logs',null)">Ver todos</button></div>
+          <div class="card-body" style="padding-top:10px">
             <table class="log-table">
-              <thead><tr><th>Cliente</th><th>Produto</th><th>Valor</th><th>Status</th><th>Data</th><th></th></tr></thead>
-              <tbody id="tb-overview">
-                <tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Clique em "Sincronizar Frendz" para carregar transações reais</td></tr>
-                <tr><td>Carlos Souza</td><td><span class="tag tag-card">Cartão</span></td><td>Cartão recusado</td><td>Msg 1</td><td><span class="status-badge sb-enviado"><i class="ti ti-check"></i> Enviado</span></td><td>há 34 min</td></tr>
-                <tr><td>Fernanda Costa</td><td><span class="tag tag-cart">Carrinho</span></td><td>Abandono carrinho</td><td>Msg 2</td><td><span class="status-badge sb-pendente"><i class="ti ti-clock"></i> Pendente</span></td><td>há 1h</td></tr>
-                <tr><td>João Pedro</td><td><span class="tag tag-pix">PIX</span></td><td>Recuperação PIX</td><td>Msg 3</td><td><span class="status-badge sb-erro"><i class="ti ti-x"></i> Erro</span></td><td>há 2h</td></tr>
+              <thead><tr><th>Cliente</th><th>Evento</th><th>Funil</th><th>Msg</th><th>Status</th><th>Quando</th></tr></thead>
+              <tbody>
+                <tr><td style="color:var(--text)">Ana Lima</td><td><span class="chip chip-waiting">waiting</span></td><td>Recup. PIX</td><td>Msg 1</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">há 8 min</td></tr>
+                <tr><td style="color:var(--text)">Carlos Souza</td><td><span class="chip chip-refused">refused</span></td><td>Cartão recusado</td><td>Msg 1</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">há 22 min</td></tr>
+                <tr><td style="color:var(--text)">Fernanda Costa</td><td><span class="chip chip-processing">processing</span></td><td>Em processamento</td><td>Msg 1</td><td><span class="status-pill badge-warning">⏳ Pendente</span></td><td style="color:var(--text3)">há 1h</td></tr>
+                <tr><td style="color:var(--text)">Mariana Rocha</td><td><span class="chip chip-waiting">waiting</span></td><td>Recup. PIX</td><td>Msg 2</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">há 2h</td></tr>
+                <tr><td style="color:var(--text)">Pedro Alves</td><td><span class="chip chip-refused">refused</span></td><td>Cartão recusado</td><td>Msg 2</td><td><span class="status-pill badge-danger">✗ Erro</span></td><td style="color:var(--text3)">há 3h</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- VIEW: Funis -->
-      <div id="view-funis" class="hidden">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-filter"></i> Funis de recuperação</span>
-            <button class="btn btn-primary btn-sm" onclick="openModal('modal-novo-funil')"><i class="ti ti-plus"></i> Novo funil</button>
+      <!-- ── FUNIS ── -->
+      <div id="view-funis" style="display:none;flex-direction:column;gap:24px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-filter"></i> Funis configurados</span><button class="btn btn-primary btn-sm" onclick="openModal('modal-funil')"><i class="ti ti-plus"></i> Novo</button></div>
+            <div class="card-body">
+              <div class="funnel-list">
+                <div class="funnel-row selected" onclick="selectFunil(this)">
+                  <div class="funnel-indicator"></div>
+                  <div class="funnel-info">
+                    <div class="funnel-name">Recuperação PIX</div>
+                    <div class="funnel-meta">3 mensagens · 15min → 1h → 3h</div>
+                    <div class="funnel-tags"><span class="chip chip-waiting">waiting</span></div>
+                  </div>
+                  <div class="funnel-actions">
+                    <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                  </div>
+                </div>
+                <div class="funnel-row" onclick="selectFunil(this)">
+                  <div class="funnel-indicator"></div>
+                  <div class="funnel-info">
+                    <div class="funnel-name">Cartão recusado</div>
+                    <div class="funnel-meta">2 mensagens · 10min → 2h</div>
+                    <div class="funnel-tags"><span class="chip chip-refused">refused</span></div>
+                  </div>
+                  <div class="funnel-actions">
+                    <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                  </div>
+                </div>
+                <div class="funnel-row" onclick="selectFunil(this)">
+                  <div class="funnel-indicator"></div>
+                  <div class="funnel-info">
+                    <div class="funnel-name">Em processamento</div>
+                    <div class="funnel-meta">2 mensagens · 30min → 2h</div>
+                    <div class="funnel-tags"><span class="chip chip-processing">processing</span></div>
+                  </div>
+                  <div class="funnel-actions">
+                    <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                  </div>
+                </div>
+                <div class="funnel-row" onclick="selectFunil(this)">
+                  <div class="funnel-indicator off"></div>
+                  <div class="funnel-info">
+                    <div class="funnel-name">Cancelado</div>
+                    <div class="funnel-meta">Inativo · 1 mensagem</div>
+                    <div class="funnel-tags"><span class="chip chip-cancelled">cancelled</span></div>
+                  </div>
+                  <div class="funnel-actions">
+                    <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="funnel-list" id="funil-list">
-              <div class="funnel-item selected" onclick="selectFunil(this); setView('mensagens')">
-                <div class="funnel-dot"></div>
-                <div class="funnel-info">
-                  <div class="funnel-name">Aguardando pagamento</div>
-                  <div class="funnel-meta">3 mensagens · Espera: 15min, 1h, 3h</div>
-                  <div class="funnel-tags">
-                    <span class="tag tag-pix">waiting</span>
+          <div class="card">
+            <div class="card-header" style="padding-bottom:0"><span class="card-title"><i class="ti ti-message-2"></i> Mensagens — Recuperação PIX</span></div>
+            <div class="tabs">
+              <div class="tab active" onclick="switchTab(this,'tab-seq')">Sequência</div>
+              <div class="tab" onclick="switchTab(this,'tab-cfg')">Config</div>
+            </div>
+            <div id="tab-seq" class="card-body">
+              <div class="tl-vars" style="margin-bottom:16px">
+                <span class="tl-var">{{nome}}</span><span class="tl-var">{{produto}}</span><span class="tl-var">{{valor}}</span><span class="tl-var">{{pix_url}}</span>
+              </div>
+              <div class="timeline">
+                <div class="tl-step">
+                  <div class="tl-line"><div class="tl-dot">1</div><div class="tl-connector"></div></div>
+                  <div class="tl-body">
+                    <div class="tl-header">
+                      <span class="tl-title">Mensagem 1</span>
+                      <span class="tl-timing"><i class="ti ti-clock"></i> Imediato</span>
+                    </div>
+                    <div class="tl-bubble">Oi {{nome}}! 👋 Vi que você tentou comprar {{produto}} mas o PIX ainda não foi pago.
+
+Ainda dá tempo! Me responde aqui que te ajudo a finalizar. 😊</div>
                   </div>
                 </div>
-                <div class="funnel-actions">
-                  <button class="btn btn-sm" onclick="event.stopPropagation(); setView('mensagens')"><i class="ti ti-edit"></i> Editar</button>
-                  <button class="btn btn-sm btn-danger" onclick="event.stopPropagation()"><i class="ti ti-trash"></i></button>
-                </div>
-              </div>
-              <div class="funnel-item" onclick="selectFunil(this); setView('mensagens')">
-                <div class="funnel-dot"></div>
-                <div class="funnel-info">
-                  <div class="funnel-name">Cartão recusado</div>
-                  <div class="funnel-meta">2 mensagens · Espera: 10min, 2h</div>
-                  <div class="funnel-tags">
-                    <span class="tag tag-card">refused</span>
+                <div class="tl-step">
+                  <div class="tl-line"><div class="tl-dot">2</div><div class="tl-connector"></div></div>
+                  <div class="tl-body">
+                    <div class="tl-header">
+                      <span class="tl-title">Mensagem 2</span>
+                      <span class="tl-timing"><i class="ti ti-clock"></i> 1 hora depois</span>
+                    </div>
+                    <div class="tl-bubble">{{nome}}, seu acesso ao {{produto}} ainda está disponível! 🎯
+
+Valor: R$ {{valor}} — posso te ajudar agora?</div>
                   </div>
                 </div>
-                <div class="funnel-actions">
-                  <button class="btn btn-sm" onclick="event.stopPropagation(); setView('mensagens')"><i class="ti ti-edit"></i> Editar</button>
-                  <button class="btn btn-sm btn-danger" onclick="event.stopPropagation()"><i class="ti ti-trash"></i></button>
-                </div>
-              </div>
-              <div class="funnel-item" onclick="selectFunil(this); setView('mensagens')">
-                <div class="funnel-dot"></div>
-                <div class="funnel-info">
-                  <div class="funnel-name">Em processamento</div>
-                  <div class="funnel-meta">2 mensagens · Espera: 30min, 2h</div>
-                  <div class="funnel-tags">
-                    <span class="tag tag-cart">processing</span>
+                <div class="tl-step">
+                  <div class="tl-line"><div class="tl-dot">3</div></div>
+                  <div class="tl-body">
+                    <div class="tl-header">
+                      <span class="tl-title">Mensagem 3</span>
+                      <span class="tl-timing"><i class="ti ti-clock"></i> 3 horas depois</span>
+                    </div>
+                    <div class="tl-bubble">Última chance! ⏰ {{nome}}, me responde aqui que te ajudo pessoalmente! 💬</div>
                   </div>
                 </div>
-                <div class="funnel-actions">
-                  <button class="btn btn-sm" onclick="event.stopPropagation(); setView('mensagens')"><i class="ti ti-edit"></i> Editar</button>
-                  <button class="btn btn-sm btn-danger" onclick="event.stopPropagation()"><i class="ti ti-trash"></i></button>
-                </div>
+                <div class="tl-add"><button class="tl-add-btn" onclick="openModal('modal-msg')"><i class="ti ti-plus"></i> Adicionar mensagem</button></div>
               </div>
-              <div class="funnel-item" onclick="selectFunil(this); setView('mensagens')">
-                <div class="funnel-dot off"></div>
-                <div class="funnel-info">
-                  <div class="funnel-name">Cancelado</div>
-                  <div class="funnel-meta">Inativo · 2 mensagens</div>
-                  <div class="funnel-tags">
-                    <span class="tag tag-card">cancelled</span>
-                  </div>
-                </div>
-                <div class="funnel-actions">
-                  <button class="btn btn-sm" onclick="event.stopPropagation(); setView('mensagens')"><i class="ti ti-edit"></i> Editar</button>
-                  <button class="btn btn-sm btn-danger" onclick="event.stopPropagation()"><i class="ti ti-trash"></i></button>
-                </div>
+            </div>
+            <div id="tab-cfg" class="card-body hidden">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div class="field"><label>Nome</label><input type="text" value="Recuperação PIX" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"></div>
+                <div class="field"><label>Evento</label><select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"><option>Aguardando pagamento</option><option>Recusado</option></select></div>
+                <div class="field"><label>Parar ao pagar?</label><select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"><option>Sim</option><option>Não</option></select></div>
+                <div class="field"><label>Status</label><select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"><option>Ativo</option><option>Inativo</option></select></div>
               </div>
+              <button class="btn btn-primary" style="margin-top:8px;width:fit-content"><i class="ti ti-device-floppy"></i> Salvar</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VIEW: Mensagens -->
-      <div id="view-mensagens" class="hidden">
+      <!-- ── EVENTOS ── -->
+      <div id="view-eventos" style="display:none;flex-direction:column;gap:24px">
         <div class="card">
-          <div class="card-header" style="padding-bottom: 0;">
-            <span class="card-title"><i class="ti ti-message-2"></i> Mensagens — Recuperação PIX</span>
-            <button class="btn btn-sm" onclick="setView('funis',this)"><i class="ti ti-arrow-left"></i> Voltar aos funis</button>
-          </div>
-          <div class="tabs">
-            <div class="tab active" onclick="switchTab(this,'tab-msgs')">Sequência de mensagens</div>
-            <div class="tab" onclick="switchTab(this,'tab-config-funil')">Configurações do funil</div>
-          </div>
-          <div id="tab-msgs" class="card-body">
-            <p style="font-size: 12px; color: var(--text3); margin-bottom: 16px;">
-              Variáveis disponíveis: clique para copiar. Use no texto das mensagens.
-            </p>
-            <div class="msg-vars" style="margin-bottom: 20px;">
-              <span class="msg-var" onclick="copyVar(this)">{{nome}}</span>
-              <span class="msg-var" onclick="copyVar(this)">{{produto}}</span>
-              <span class="msg-var" onclick="copyVar(this)">{{valor}}</span>
-              <span class="msg-var" onclick="copyVar(this)">{{link_checkout}}</span>
-              <span class="msg-var" onclick="copyVar(this)">{{pix_url}}</span>
-              <span class="msg-var" onclick="copyVar(this)">{{link_oferta}}</span>
-            </div>
-            <div class="msg-timeline">
-              <!-- Msg 1 -->
-              <div class="msg-step">
-                <div class="msg-step-line">
-                  <div class="msg-dot">1</div>
-                  <div class="msg-connector"></div>
-                </div>
-                <div class="msg-content">
-                  <div class="msg-header">
-                    <span style="font-size: 12px; font-weight: 500; color: var(--text2);">Mensagem 1</span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <span class="msg-timing"><i class="ti ti-clock" style="font-size:12px"></i> Imediato após evento</span>
-                      <button class="btn btn-sm"><i class="ti ti-edit" style="font-size:12px"></i></button>
-                      <button class="btn btn-sm btn-danger"><i class="ti ti-trash" style="font-size:12px"></i></button>
-                    </div>
-                  </div>
-                  <div class="msg-bubble">Oi {{nome}}! 👋 Vi que você tentou comprar {{produto}} mas o PIX não foi pago.
-
-Ainda dá tempo! Aqui está seu link de pagamento:
-{{pix_url}}
-
-Qualquer dúvida, é só falar! 😊</div>
-                </div>
-              </div>
-              <!-- Msg 2 -->
-              <div class="msg-step">
-                <div class="msg-step-line">
-                  <div class="msg-dot">2</div>
-                  <div class="msg-connector"></div>
-                </div>
-                <div class="msg-content">
-                  <div class="msg-header">
-                    <span style="font-size: 12px; font-weight: 500; color: var(--text2);">Mensagem 2</span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <span class="msg-timing"><i class="ti ti-clock" style="font-size:12px"></i> Aguardar 1 hora</span>
-                      <button class="btn btn-sm"><i class="ti ti-edit" style="font-size:12px"></i></button>
-                      <button class="btn btn-sm btn-danger"><i class="ti ti-trash" style="font-size:12px"></i></button>
-                    </div>
-                  </div>
-                  <div class="msg-bubble">{{nome}}, seu acesso ao {{produto}} ainda está disponível! 🎯
-
-Valor: R$ {{valor}}
-
-👉 Finalize agora: {{link_checkout}}
-
-Não perca essa oportunidade!</div>
-                </div>
-              </div>
-              <!-- Msg 3 -->
-              <div class="msg-step">
-                <div class="msg-step-line">
-                  <div class="msg-dot">3</div>
-                </div>
-                <div class="msg-content">
-                  <div class="msg-header">
-                    <span style="font-size: 12px; font-weight: 500; color: var(--text2);">Mensagem 3</span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <span class="msg-timing"><i class="ti ti-clock" style="font-size:12px"></i> Aguardar 3 horas</span>
-                      <button class="btn btn-sm"><i class="ti ti-edit" style="font-size:12px"></i></button>
-                      <button class="btn btn-sm btn-danger"><i class="ti ti-trash" style="font-size:12px"></i></button>
-                    </div>
-                  </div>
-                  <div class="msg-bubble">Última chance! ⏰ {{nome}}, o acesso ao {{produto}} pode expirar em breve.
-
-Se tiver dúvidas sobre o pagamento, responda aqui que te ajudo pessoalmente! 💬</div>
-                </div>
-              </div>
-              <!-- Add -->
-              <div class="msg-add">
-                <button class="msg-add-btn" onclick="openModal('modal-nova-msg')">
-                  <i class="ti ti-plus"></i> Adicionar mensagem
-                </button>
-              </div>
-            </div>
-          </div>
-          <div id="tab-config-funil" class="card-body hidden">
-            <div class="config-grid">
-              <div class="field">
-                <label>Nome do funil</label>
-                <input type="text" value="Recuperação PIX">
-              </div>
-              <div class="field">
-                <label>Evento gatilho</label>
-                <select>
-                  <option selected>Aguardando pagamento (waiting)</option>
-                  <option>Recusado (refused)</option>
-                  <option>Em processamento (processing)</option>
-                </select>
-              </div>
-              <div class="field">
-                <label>Canal de disparo</label>
-                <select>
-                  <option>WhatsApp (Evolution API)</option>
-                  <option>E-mail</option>
-                  <option>Webhook externo</option>
-                </select>
-              </div>
-              <div class="field">
-                <label>Parar se pagar?</label>
-                <select>
-                  <option selected>Sim — parar envios ao confirmar pagamento</option>
-                  <option>Não</option>
-                </select>
-              </div>
-              <div class="field field-full" style="margin-top: 4px;">
-                <button class="btn btn-primary" style="width: fit-content;">Salvar configurações</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIEW: Eventos -->
-      <div id="view-eventos" class="hidden">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-bolt"></i> Eventos Frendz — gatilhos de automação</span>
-          </div>
+          <div class="card-header"><span class="card-title"><i class="ti ti-bolt"></i> Eventos monitorados</span></div>
           <div class="card-body">
-            <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px;">
-              Ative os eventos que devem disparar os funis de recuperação. A Frendz enviará os dados via postback para seu webhook configurado.
-            </p>
+            <p style="font-size:13px;color:var(--text3);margin-bottom:20px">Ative os eventos que devem disparar seus funis. A plataforma monitora sua conta Frendz em tempo real.</p>
             <div class="eventos-grid">
-              <div class="evento-card on">
-                <div class="ev-toggle on" onclick="this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-clock-pause"></i></div>
-                <div class="ev-titulo">Aguardando pagamento</div>
-                <div class="ev-desc">payment_status: waiting — PIX ou boleto emitido, pagamento não confirmado</div>
-                <span class="ev-badge badge-pix">waiting</span>
+              <div class="ev-card on">
+                <div class="ev-top"><div class="ev-icon"><i class="ti ti-clock-pause"></i></div><div class="ev-toggle on" onclick="this.classList.toggle('on');this.parentElement.parentElement.classList.toggle('on')"></div></div>
+                <div class="ev-title">Aguardando pagamento</div>
+                <div class="ev-desc">PIX ou boleto emitido, cliente não pagou ainda</div>
+                <span class="ev-badge badge-warning">waiting</span>
               </div>
-              <div class="evento-card on">
-                <div class="ev-toggle on" onclick="this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-credit-card-off"></i></div>
-                <div class="ev-titulo">Recusado</div>
-                <div class="ev-desc">payment_status: refused — cartão recusado, refuse_reason preenchido</div>
-                <span class="ev-badge badge-card">refused</span>
+              <div class="ev-card on">
+                <div class="ev-top"><div class="ev-icon"><i class="ti ti-credit-card-off"></i></div><div class="ev-toggle on" onclick="this.classList.toggle('on');this.parentElement.parentElement.classList.toggle('on')"></div></div>
+                <div class="ev-title">Cartão recusado</div>
+                <div class="ev-desc">Tentativa com cartão negada pela operadora</div>
+                <span class="ev-badge badge-danger">refused</span>
               </div>
-              <div class="evento-card on">
-                <div class="ev-toggle on" onclick="this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-loader"></i></div>
-                <div class="ev-titulo">Em processamento</div>
-                <div class="ev-desc">payment_status: processing — enviado ao gateway, aguardando retorno</div>
-                <span class="ev-badge badge-cart">processing</span>
+              <div class="ev-card on">
+                <div class="ev-top"><div class="ev-icon"><i class="ti ti-loader"></i></div><div class="ev-toggle on" onclick="this.classList.toggle('on');this.parentElement.parentElement.classList.toggle('on')"></div></div>
+                <div class="ev-title">Em processamento</div>
+                <div class="ev-desc">Pagamento enviado, aguardando confirmação</div>
+                <span class="ev-badge badge-accent">processing</span>
               </div>
-              <div class="evento-card">
-                <div class="ev-toggle" onclick="this.classList.toggle('on'); this.parentElement.classList.toggle('on')"></div>
-                <div class="ev-icon"><i class="ti ti-ban"></i></div>
-                <div class="ev-titulo">Cancelado</div>
-                <div class="ev-desc">payment_status: cancelled — transação cancelada antes da confirmação</div>
-                <span class="ev-badge badge-card">cancelled</span>
+              <div class="ev-card">
+                <div class="ev-top"><div class="ev-icon"><i class="ti ti-ban"></i></div><div class="ev-toggle" onclick="this.classList.toggle('on');this.parentElement.parentElement.classList.toggle('on')"></div></div>
+                <div class="ev-title">Cancelado</div>
+                <div class="ev-desc">Transação cancelada antes da confirmação</div>
+                <span class="ev-badge badge-danger">cancelled</span>
               </div>
-            </div>
-            <div style="margin-top: 16px; padding: 14px; background: var(--accent-bg); border-radius: var(--radius-sm); border: 0.5px solid rgba(127,119,221,0.25);">
-              <p style="font-size: 12px; color: var(--accent-text); line-height: 1.6;">
-                <strong>Como funciona:</strong> A Frendz detecta esses eventos via polling da API <code style="background: rgba(127,119,221,0.15); padding: 1px 5px; border-radius: 3px;">/public/v1/transactions</code> com filtro de <code style="background: rgba(127,119,221,0.15); padding: 1px 5px; border-radius: 3px;">payment_status</code> e <code style="background: rgba(127,119,221,0.15); padding: 1px 5px; border-radius: 3px;">payment_method</code>. Configure o campo <code style="background: rgba(127,119,221,0.15); padding: 1px 5px; border-radius: 3px;">postback_url</code> na request de pagamento para receber atualizações em tempo real.
-              </p>
             </div>
           </div>
         </div>
-
         <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-route"></i> Funil associado por evento</span>
-          </div>
-          <div class="card-body">
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm);">
-                <span class="tag tag-pix" style="min-width: 160px; text-align: center;">Aguardando pagamento</span>
-                <i class="ti ti-arrow-right" style="color: var(--text3)"></i>
-                <select style="flex: 1; background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px;">
-                  <option>Recuperação PIX / Boleto</option>
-                  <option>Retentativa de pagamento</option>
-                </select>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm);">
-                <span class="tag tag-card" style="min-width: 160px; text-align: center;">Recusado</span>
-                <i class="ti ti-arrow-right" style="color: var(--text3)"></i>
-                <select style="flex: 1; background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px;">
-                  <option>Recusado (refused)</option>
-                  <option>Retentativa de pagamento</option>
-                </select>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm);">
-                <span class="tag tag-cart" style="min-width: 160px; text-align: center;">Em processamento</span>
-                <i class="ti ti-arrow-right" style="color: var(--text3)"></i>
-                <select style="flex: 1; background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px;">
-                  <option>Acompanhamento processando</option>
-                  <option>Retentativa de pagamento</option>
-                </select>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm);">
-                <span class="tag tag-card" style="min-width: 160px; text-align: center;">Cancelado</span>
-                <i class="ti ti-arrow-right" style="color: var(--text3)"></i>
-                <select style="flex: 1; background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px;">
-                  <option>Recuperação cancelados</option>
-                  <option>Retentativa de pagamento</option>
-                </select>
-              </div>
-              <button class="btn btn-primary" style="width: fit-content; margin-top: 4px;">Salvar associações</button>
+          <div class="card-header"><span class="card-title"><i class="ti ti-route"></i> Evento → Funil</span></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px">
+              <span class="chip chip-waiting" style="min-width:120px;justify-content:center">waiting</span>
+              <i class="ti ti-arrow-right" style="color:var(--text3)"></i>
+              <select style="flex:1;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none"><option>Recuperação PIX</option></select>
             </div>
+            <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px">
+              <span class="chip chip-refused" style="min-width:120px;justify-content:center">refused</span>
+              <i class="ti ti-arrow-right" style="color:var(--text3)"></i>
+              <select style="flex:1;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none"><option>Cartão recusado</option></select>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px">
+              <span class="chip chip-processing" style="min-width:120px;justify-content:center">processing</span>
+              <i class="ti ti-arrow-right" style="color:var(--text3)"></i>
+              <select style="flex:1;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none"><option>Em processamento</option></select>
+            </div>
+            <button class="btn btn-primary" style="width:fit-content"><i class="ti ti-device-floppy"></i> Salvar associações</button>
           </div>
         </div>
       </div>
 
-      <!-- VIEW: Webhook -->
-      <div id="view-webhook" class="hidden">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-webhook"></i> Webhook de entrada — Frendz → CRM</span>
-          </div>
-          <div class="card-body">
-            <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px;">
-              Configure esta URL no campo <code style="background: var(--surface2); padding: 1px 6px; border-radius: 3px; font-size: 12px;">postback_url</code> das suas transações na API Frendz para receber eventos em tempo real.
-            </p>
-            <div class="webhook-box">
-              <div class="webhook-url" id="webhook-url-display">https://seu-servidor.com/api/frendz/webhook</div>
-              <div class="webhook-status">
-                <div class="ws-dot"></div>
-                <span class="ws-label">Aguardando eventos</span>
-              </div>
-            </div>
-            <div style="display: flex; gap: 8px; margin-top: 12px;">
-              <button class="btn btn-sm" onclick="copyWebhook()"><i class="ti ti-copy"></i> Copiar URL</button>
-              <button class="btn btn-sm"><i class="ti ti-player-play"></i> Testar webhook</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-settings"></i> Configuração do endpoint</span>
-          </div>
-          <div class="card-body">
-            <div class="config-grid">
-              <div class="field field-full">
-                <label>URL base do servidor</label>
-                <input type="url" placeholder="https://seu-servidor.com" id="server-url">
-                <span class="field-hint">Exemplo: https://meucrm.com.br ou URL do EasyPanel/DigitalOcean</span>
-              </div>
-              <div class="field">
-                <label>Segredo do webhook (opcional)</label>
-                <input type="password" placeholder="chave secreta para validação">
-              </div>
-              <div class="field">
-                <label>Autenticação esperada</label>
-                <select>
-                  <option>Nenhuma</option>
-                  <option>Bearer Token</option>
-                  <option>Assinatura HMAC</option>
-                </select>
-              </div>
-              <div class="field field-full">
-                <button class="btn btn-primary" style="width: fit-content;" onclick="saveWebhook()">Salvar e gerar URL</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-code"></i> Payload esperado da Frendz</span>
-          </div>
-          <div class="card-body">
-            <div class="webhook-box">
-              <pre class="webhook-url" style="font-size:11px; line-height:1.6;">{
-  "payment_status": "waiting",     // waiting | refused | processing | cancelled
-  "payment_method": "pix",         // pix | credit_card | billet
-  "refuse_reason": null,           // preenchido se status = refused
-  "customer": {
-    "name": "Nome do Cliente",
-    "email": "email@cliente.com",
-    "phone_number": "11999999999"
-  },
-  "product": { "title": "...", "hash": "..." },
-  "amount": 15000,                 // em centavos
-  "hash": "transaction_hash",
-  "created_at": "2026-06-19T..."
-}</pre>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- VIEW: Transações Reais -->
-      <div id="view-transacoes" class="hidden">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-credit-card"></i> Transações reais da Frendz</span>
-            <div style="display:flex;gap:8px">
-              <select id="filter-status" class="btn btn-sm" style="padding:5px 10px;cursor:pointer" onchange="filtrarTransacoes()">
-                <option value="">Todos os status</option>
-                <option value="waiting">Aguardando pagamento</option>
-                <option value="refused">Recusado</option>
-                <option value="processing">Em processamento</option>
-                <option value="cancelled">Cancelado</option>
-              </select>
-              <button class="btn btn-sm btn-primary" onclick="syncFrendz()"><i class="ti ti-refresh"></i> Atualizar</button>
-            </div>
-          </div>
-          <div class="card-body" style="padding-top:8px">
-            <table class="log-table">
-              <thead><tr><th>Cliente</th><th>Email</th><th>Telefone</th><th>Produto</th><th>Valor</th><th>Método</th><th>Status</th><th>Data</th><th></th></tr></thead>
-              <tbody id="tb-transacoes"><tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px">Clique em "Sincronizar Frendz" para carregar</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIEW: Logs -->
-      <div id="view-logs" class="hidden">
+      <!-- ── LOGS ── -->
+      <div id="view-logs" style="display:none;flex-direction:column;gap:24px">
         <div class="card">
           <div class="card-header">
             <span class="card-title"><i class="ti ti-list-details"></i> Log de disparos</span>
-            <div style="display: flex; gap: 8px;">
-              <select class="btn btn-sm" style="padding: 5px 10px; cursor: pointer;">
-                <option>Todos os eventos</option>
-                <option>Aguardando pagamento</option>
-                <option>Recusado</option>
-                <option>Em processamento</option>
-                <option>Cancelado</option>
-              </select>
-              <select class="btn btn-sm" style="padding: 5px 10px; cursor: pointer;">
-                <option>Todos os status</option>
-                <option>Enviado</option>
-                <option>Pendente</option>
-                <option>Erro</option>
-              </select>
+            <div style="display:flex;gap:8px">
+              <select class="btn btn-ghost btn-sm" style="cursor:pointer;border:1px solid var(--border2)"><option>Todos</option><option>Enviado</option><option>Pendente</option><option>Erro</option></select>
+              <button class="btn btn-ghost btn-sm"><i class="ti ti-download"></i> Exportar</button>
             </div>
           </div>
-          <div class="card-body" style="padding-top: 8px;">
+          <div class="card-body" style="padding-top:10px">
             <table class="log-table">
-              <thead><tr>
-                <th>Cliente</th><th>Telefone</th><th>Evento</th><th>Funil</th><th>Msg</th><th>Status</th><th>Quando</th><th></th>
-              </tr></thead>
-              <tbody id="tb-logs">
-                <tr><td>Ana Lima</td><td>11987654321</td><td><span class="tag tag-pix">waiting</span></td><td>Aguardando pagamento</td><td>Msg 1</td><td><span class="status-badge sb-enviado"><i class="ti ti-check"></i> Enviado</span></td><td>há 12 min</td><td><button class="btn btn-sm"><i class="ti ti-eye"></i></button></td></tr>
-                <tr><td>Carlos Souza</td><td>21976543210</td><td><span class="tag tag-card">refused</span></td><td>Cartão recusado</td><td>Msg 1</td><td><span class="status-badge sb-enviado"><i class="ti ti-check"></i> Enviado</span></td><td>há 34 min</td><td><button class="btn btn-sm"><i class="ti ti-eye"></i></button></td></tr>
-                <tr><td>Fernanda Costa</td><td>31965432109</td><td><span class="tag tag-cart">processing</span></td><td>Em processamento</td><td>Msg 1</td><td><span class="status-badge sb-pendente"><i class="ti ti-clock"></i> Pendente</span></td><td>há 1h</td><td><button class="btn btn-sm"><i class="ti ti-eye"></i></button></td></tr>
-                <tr><td>João Pedro</td><td>11954321098</td><td><span class="tag tag-pix">waiting</span></td><td>Aguardando pagamento</td><td>Msg 3</td><td><span class="status-badge sb-erro"><i class="ti ti-x"></i> Erro</span></td><td>há 2h</td><td><button class="btn btn-sm"><i class="ti ti-refresh"></i></button></td></tr>
-                <tr><td>Mariana Rocha</td><td>85943210987</td><td><span class="tag tag-card">cancelled</span></td><td>Cancelado</td><td>Msg 1</td><td><span class="status-badge sb-enviado"><i class="ti ti-check"></i> Enviado</span></td><td>há 3h</td><td><button class="btn btn-sm"><i class="ti ti-eye"></i></button></td></tr>
+              <thead><tr><th>Cliente</th><th>Telefone</th><th>Evento</th><th>Funil</th><th>Mensagem</th><th>Status</th><th>Horário</th></tr></thead>
+              <tbody>
+                <tr><td style="color:var(--text)">Ana Lima</td><td>11 98765-4321</td><td><span class="chip chip-waiting">waiting</span></td><td>Recup. PIX</td><td>Msg 1</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">hoje 14:32</td></tr>
+                <tr><td style="color:var(--text)">Carlos Souza</td><td>21 97654-3210</td><td><span class="chip chip-refused">refused</span></td><td>Cartão recusado</td><td>Msg 1</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">hoje 14:10</td></tr>
+                <tr><td style="color:var(--text)">Fernanda Costa</td><td>31 96543-2109</td><td><span class="chip chip-processing">processing</span></td><td>Em processamento</td><td>Msg 1</td><td><span class="status-pill badge-warning">⏳ Pendente</span></td><td style="color:var(--text3)">hoje 13:45</td></tr>
+                <tr><td style="color:var(--text)">Mariana Rocha</td><td>85 94321-0987</td><td><span class="chip chip-waiting">waiting</span></td><td>Recup. PIX</td><td>Msg 2</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">hoje 12:20</td></tr>
+                <tr><td style="color:var(--text)">Pedro Alves</td><td>11 95432-1098</td><td><span class="chip chip-refused">refused</span></td><td>Cartão recusado</td><td>Msg 2</td><td><span class="status-pill badge-danger">✗ Erro</span></td><td style="color:var(--text3)">hoje 11:50</td></tr>
+                <tr><td style="color:var(--text)">Beatriz Lima</td><td>71 93210-9876</td><td><span class="chip chip-waiting">waiting</span></td><td>Recup. PIX</td><td>Msg 3</td><td><span class="status-pill badge-success">✓ Enviado</span></td><td style="color:var(--text3)">hoje 10:15</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- VIEW: Config -->
-      <div id="view-config" class="hidden">
+      <!-- ── CONFIG ── -->
+      <div id="view-config" style="display:none;flex-direction:column;gap:20px">
         <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-key"></i> Credenciais da API Frendz</span>
-          </div>
+          <div class="card-header"><span class="card-title"><i class="ti ti-key"></i> API Frendz</span></div>
           <div class="card-body">
-            <div class="config-grid">
-              <div class="field field-full">
-                <label>Endpoint base</label>
-                <input type="url" value="https://api.frendz.com.br/api" readonly style="color: var(--text3);">
+            <div class="field"><label>api_token</label><input type="password" value="••••••••••••••••••••••••" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(34,201,138,0.2);border-radius:var(--radius-sm)">
+              <i class="ti ti-circle-check" style="color:var(--success);font-size:16px"></i>
+              <span style="font-size:13px;color:var(--success)">Conectado como João Silva · joao@vendas.com</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="ti ti-brand-whatsapp"></i> WhatsApp conectado</span></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border-radius:var(--radius-sm);padding:14px">
+              <div style="width:40px;height:40px;background:var(--success-bg);border:1px solid rgba(34,201,138,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-brand-whatsapp" style="color:var(--success);font-size:20px"></i></div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:600">recuperacao-joao</div><div style="font-size:12px;color:var(--text3);margin-top:2px">Conectado · última atividade agora</div></div>
+              <button class="btn btn-ghost btn-sm"><i class="ti ti-refresh"></i> Reconectar</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="ti ti-webhook"></i> Webhook n8n</span></div>
+          <div class="card-body">
+            <div style="background:#0d0d12;border-radius:var(--radius-sm);padding:14px 16px;font-family:monospace;font-size:12px;color:#a0a0c0;word-break:break-all">https://automacao-n8n.7xsh2r.easypanel.host/webhook/frendz</div>
+            <p style="font-size:12px;color:var(--text3);margin-top:10px">Cole esta URL no campo <strong style="color:var(--text2)">URL de Postback</strong> nas Integrações da Frendz.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PLANOS ── -->
+      <div id="view-planos" style="display:none;flex-direction:column;gap:24px">
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="ti ti-crown"></i> Planos disponíveis</span></div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--text3);margin-bottom:24px">Você está no plano <strong style="color:var(--accent2)">Pro</strong>. Faça upgrade a qualquer momento.</p>
+            <div class="pricing-grid">
+              <div class="price-card">
+                <div class="price-name">Starter</div>
+                <div class="price-val">R$97<span>/mês</span></div>
+                <div class="price-desc">Para quem está começando</div>
+                <div class="price-features">
+                  <div class="price-feature"><i class="ti ti-check"></i> 1 número WhatsApp</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> 3 funis de recuperação</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> 500 mensagens/mês</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Eventos: waiting + refused</div>
+                  <div class="price-feature dim"><i class="ti ti-x"></i> Multi-conta</div>
+                  <div class="price-feature dim"><i class="ti ti-x"></i> Relatórios avançados</div>
+                </div>
+                <button class="btn btn-ghost" style="width:100%">Fazer downgrade</button>
               </div>
-              <div class="field field-full">
-                <label>Token do Manager (manager_token)</label>
-                <input type="password" placeholder="Token da conta manager · GET /public/v1/master/..." id="manager-token" class="hidden">
-                <span class="field-hint">Usado para listar contas/sellers · API Manager</span>
+              <div class="price-card featured">
+                <div class="price-badge">✦ Seu plano atual</div>
+                <div class="price-name">Pro</div>
+                <div class="price-val">R$197<span>/mês</span></div>
+                <div class="price-desc">Para vendedores ativos</div>
+                <div class="price-features">
+                  <div class="price-feature"><i class="ti ti-check"></i> 3 números WhatsApp</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Funis ilimitados</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> 5.000 mensagens/mês</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Todos os eventos</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Relatórios de recuperação</div>
+                  <div class="price-feature dim"><i class="ti ti-x"></i> Multi-conta</div>
+                </div>
+                <button class="btn btn-primary" style="width:100%">Plano atual</button>
               </div>
-              <div class="field field-full">
-                <label>Token do vendedor (api_token)</label>
-                <input type="password" placeholder="Token do seller · GET /public/v1/transactions" id="seller-token">
-                <span class="field-hint">Usado para consultar transações e clientes · API Seller</span>
+              <div class="price-card">
+                <div class="price-name">Agency</div>
+                <div class="price-val">R$497<span>/mês</span></div>
+                <div class="price-desc">Para agências e revendas</div>
+                <div class="price-features">
+                  <div class="price-feature"><i class="ti ti-check"></i> 10 números WhatsApp</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Funis ilimitados</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Mensagens ilimitadas</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Todos os eventos</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> Multi-conta de vendedores</div>
+                  <div class="price-feature"><i class="ti ti-check"></i> API de relatórios</div>
+                </div>
+                <button class="btn btn-primary" style="width:100%">Fazer upgrade</button>
               </div>
-              <div class="field field-full" style="margin-top: 4px;">
-                <div style="display: flex; gap: 8px;">
-                  <button class="btn btn-primary" onclick="saveCredentials()"><i class="ti ti-device-floppy"></i> Salvar credenciais</button>
-                  <button class="btn" onclick="testCredentials()"><i class="ti ti-wifi"></i> Testar conexão</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── GUIA ── -->
+      <div id="view-guia" style="display:none;flex-direction:column;gap:24px">
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="ti ti-book"></i> Como funciona o Frendz Recovery</span></div>
+          <div class="card-body">
+            <div class="guide-steps">
+              <div class="guide-step">
+                <div class="guide-num">1</div>
+                <div class="guide-body">
+                  <h4>Você conecta sua conta Frendz</h4>
+                  <p>Cole seu api_token e a plataforma começa a monitorar suas transações automaticamente. Nenhuma configuração técnica necessária.</p>
+                </div>
+              </div>
+              <div class="guide-step">
+                <div class="guide-num">2</div>
+                <div class="guide-body">
+                  <h4>Conecta seu WhatsApp via QR Code</h4>
+                  <p>Escaneie o QR Code com qualquer número — o mesmo que já usa para vender funciona. Cada vendedor tem o seu próprio número.</p>
+                </div>
+              </div>
+              <div class="guide-step">
+                <div class="guide-num">3</div>
+                <div class="guide-body">
+                  <h4>Cria seus funis de recuperação</h4>
+                  <p>Configure as mensagens e os tempos de envio para cada evento: PIX não pago, cartão recusado, pagamento em processamento.</p>
+                </div>
+              </div>
+              <div class="guide-step">
+                <div class="guide-num">4</div>
+                <div class="guide-body">
+                  <h4>A plataforma trabalha por você</h4>
+                  <p>Quando um cliente não paga, recebe a mensagem automaticamente. Se pagar antes do próximo envio, a sequência é cancelada.</p>
+                </div>
+              </div>
+              <div class="guide-step">
+                <div class="guide-num">5</div>
+                <div class="guide-body">
+                  <h4>Você acompanha tudo pelo painel</h4>
+                  <p>Veja em tempo real quais clientes receberam mensagens, quantas vendas foram recuperadas e qual funil está performando melhor.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="ti ti-brand-whatsapp"></i> Evolution API — WhatsApp</span>
-          </div>
-          <div class="card-body">
-            <div class="config-grid">
-              <div class="field field-full"><label>URL da Evolution API</label><input type="url" id="evo-url" placeholder="https://automacao-evolution-api.7xsh2r.easypanel.host"></div>
-              <div class="field"><label>API Key</label><input type="text" id="evo-key" placeholder="sua-api-key"></div>
-              <div class="field"><label>Nome da instância</label><input type="text" id="evo-inst" placeholder="frendz-recuperacao"></div>
-              <div class="field field-full">
-                <div style="display:flex;gap:8px">
-                  <button class="btn btn-primary" onclick="saveEvolution()"><i class="ti ti-device-floppy"></i> Salvar Evolution</button>
-                  <button class="btn" onclick="testEvolution()"><i class="ti ti-wifi"></i> Testar conexão</button>
-                </div>
-                <div id="evo-test-result"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span class="card-title"><i class="ti ti-webhook"></i> URL do Webhook n8n</span></div>
-          <div class="card-body">
-            <div class="config-grid">
-              <div class="field field-full">
-                <label>URL do webhook n8n</label>
-                <input type="url" id="n8n-url" placeholder="https://automacao-n8n.7xsh2r.easypanel.host/webhook/frendz">
-                <span class="field-hint">Esta é a URL configurada na Frendz como URL de Postback</span>
-              </div>
-              <div class="field field-full"><button class="btn btn-primary" style="width:fit-content" onclick="saveN8n()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span class="card-title"><i class="ti ti-wifi"></i> Status das integrações</span>
-            <button class="btn btn-sm btn-primary" onclick="testarTodasConexoes()"><i class="ti ti-refresh"></i> Testar todas</button>
-          </div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius-sm)">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--text3)" id="dot-frendz"></div>
-              <span style="flex:1;font-size:13px">API Frendz</span>
-              <span id="lbl-frendz" style="font-size:12px;color:var(--text3)">não testado</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius-sm)">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--text3)" id="dot-n8n"></div>
-              <span style="flex:1;font-size:13px">Webhook n8n</span>
-              <span id="lbl-n8n" style="font-size:12px;color:var(--text3)">não testado</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius-sm)">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--text3)" id="dot-evo"></div>
-              <span style="flex:1;font-size:13px">Evolution API (WhatsApp)</span>
-              <span id="lbl-evo" style="font-size:12px;color:var(--text3)">não testado</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- removido antigo card whatsapp -->
-        <div class="hidden">
-          <div class="card-header">
-            <span class="card-title">OLD</span>
-          </div>
-          <div class="card-body">
-            <div class="config-grid">
-              <div class="field field-full">
-                <label>URL do Evolution API</label>
-                <input type="url" placeholder="https://evolution.meuservidor.com">
-              </div>
-              <div class="field">
-                <label>API Key</label>
-                <input type="password" placeholder="Chave da instância">
-              </div>
-              <div class="field">
-                <label>Instância</label>
-                <input type="text" placeholder="nome-da-instancia">
-              </div>
-              <div class="field field-full">
-                <button class="btn btn-primary" style="width: fit-content;"><i class="ti ti-device-floppy"></i> Salvar WhatsApp</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- Modal: Novo funil -->
-<div class="modal-overlay hidden" id="modal-novo-funil" onclick="closeModal('modal-novo-funil', event)">
+<!-- MODAIS -->
+<div class="modal-overlay hidden" id="modal-funil" onclick="closeModal('modal-funil',event)">
   <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">Criar novo funil de recuperação</span>
-      <button class="modal-close" onclick="closeModal('modal-novo-funil')"><i class="ti ti-x"></i></button>
-    </div>
+    <div class="modal-header"><span class="modal-title">Criar novo funil</span><button class="modal-close" onclick="closeModal('modal-funil')"><i class="ti ti-x"></i></button></div>
     <div class="modal-body">
-      <div class="field">
-        <label>Nome do funil</label>
-        <input type="text" placeholder="Ex: Recuperação PIX — Produto X">
-      </div>
-      <div class="field">
-        <label>Evento gatilho</label>
-        <select>
-          <option value="">Selecione um evento</option>
-          <option>Aguardando pagamento (waiting)</option>
-          <option>Recusado (refused)</option>
-          <option>Em processamento (processing)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Canal de disparo</label>
-        <select>
-          <option>WhatsApp (Evolution API)</option>
-          <option>E-mail</option>
-          <option>Webhook externo</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Parar envios ao confirmar pagamento?</label>
-        <select>
-          <option>Sim</option>
-          <option>Não</option>
-        </select>
-      </div>
+      <div class="field"><label>Nome do funil</label><input type="text" placeholder="Ex: Recuperação PIX" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"></div>
+      <div class="field"><label>Evento gatilho</label><select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"><option>Aguardando pagamento (waiting)</option><option>Recusado (refused)</option><option>Em processamento (processing)</option><option>Cancelado (cancelled)</option></select></div>
+      <div class="field"><label>Parar ao confirmar pagamento?</label><select style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none"><option>Sim — parar automaticamente</option><option>Não</option></select></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('modal-novo-funil')">Cancelar</button>
-      <button class="btn btn-primary" onclick="closeModal('modal-novo-funil')"><i class="ti ti-plus"></i> Criar e adicionar mensagens</button>
-    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-funil')">Cancelar</button><button class="btn btn-primary" onclick="closeModal('modal-funil')"><i class="ti ti-plus"></i> Criar funil</button></div>
   </div>
 </div>
 
-
-<!-- Modal: Disparar manualmente -->
-<div class="modal-overlay hidden" id="modal-disparar" onclick="closeModal('modal-disparar',event)">
+<div class="modal-overlay hidden" id="modal-msg" onclick="closeModal('modal-msg',event)">
   <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">Disparar funil para esta transação</span>
-      <button class="modal-close" onclick="closeModal('modal-disparar')"><i class="ti ti-x"></i></button>
-    </div>
+    <div class="modal-header"><span class="modal-title">Adicionar mensagem</span><button class="modal-close" onclick="closeModal('modal-msg')"><i class="ti ti-x"></i></button></div>
     <div class="modal-body">
-      <div id="disparar-info" style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px;font-size:13px;line-height:1.7"></div>
-      <div class="field">
-        <label>Funil a disparar</label>
-        <select id="disparar-funil">
-          <option value="waiting">Aguardando pagamento</option>
-          <option value="refused">Cartão recusado</option>
-          <option value="processing">Em processamento</option>
-          <option value="cancelled">Cancelado</option>
-        </select>
-      </div>
-      <div id="disparar-result"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('modal-disparar')">Cancelar</button>
-      <button class="btn btn-primary" onclick="dispararFunil()"><i class="ti ti-send"></i> Disparar via n8n</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Nova mensagem -->
-<div class="modal-overlay hidden" id="modal-nova-msg" onclick="closeModal('modal-nova-msg', event)">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">Adicionar mensagem ao funil</span>
-      <button class="modal-close" onclick="closeModal('modal-nova-msg')"><i class="ti ti-x"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="field">
-        <label>Aguardar antes de enviar</label>
-        <div style="display: flex; gap: 8px;">
-          <input type="number" placeholder="15" style="width: 80px;">
-          <select style="flex: 1;">
-            <option>minutos</option>
-            <option>horas</option>
-            <option>dias</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Texto da mensagem</label>
-        <textarea rows="5" placeholder="Oi {{nome}}, vi que você tentou comprar..."></textarea>
-        <div class="msg-vars" style="margin-top: 6px;">
-          <span class="msg-var" onclick="copyVar(this)">{{nome}}</span>
-          <span class="msg-var" onclick="copyVar(this)">{{produto}}</span>
-          <span class="msg-var" onclick="copyVar(this)">{{valor}}</span>
-          <span class="msg-var" onclick="copyVar(this)">{{link_checkout}}</span>
-          <span class="msg-var" onclick="copyVar(this)">{{pix_url}}</span>
-        </div>
+      <div class="field"><label>Aguardar antes de enviar</label><div style="display:flex;gap:8px"><input type="number" placeholder="15" style="width:80px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;outline:none"><select style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;outline:none"><option>minutos</option><option>horas</option><option>dias</option></select></div></div>
+      <div class="field"><label>Texto da mensagem</label><textarea rows="5" placeholder="Oi {{nome}}, vi que você tentou comprar..." style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:inherit;width:100%;outline:none;resize:vertical;min-height:100px"></textarea>
+        <div class="tl-vars" style="margin-top:8px"><span class="tl-var">{{nome}}</span><span class="tl-var">{{produto}}</span><span class="tl-var">{{valor}}</span><span class="tl-var">{{pix_url}}</span></div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('modal-nova-msg')">Cancelar</button>
-      <button class="btn btn-primary" onclick="closeModal('modal-nova-msg')"><i class="ti ti-device-floppy"></i> Salvar mensagem</button>
-    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-msg')">Cancelar</button><button class="btn btn-primary" onclick="closeModal('modal-msg')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
   </div>
 </div>
 
 <script>
-// ── STATE ──
-let txAll = [], txAtual = null;
-const g = k => localStorage.getItem(k) || '';
-const sv = (k,v) => localStorage.setItem(k,v);
-
-// ── NAV ──
-const TITLES = {overview:'Visão geral',funis:'Meus funis',mensagens:'Mensagens do funil',eventos:'Eventos Frendz',webhook:'Webhook',transacoes:'Transações reais',logs:'Log de disparos',config:'Credenciais API'};
-
-function setView(v, el) {
-  document.querySelectorAll('[id^="view-"]').forEach(e => e.classList.add('hidden'));
-  document.getElementById('view-'+v).classList.remove('hidden');
-  document.getElementById('topbar-title').textContent = TITLES[v]||v;
-  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-  if(el) el.classList.add('active');
+// ── NAVIGATION ──
+function goTo(dest) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  if(dest==='auth') document.getElementById('screen-auth').classList.add('active');
+  else if(dest==='onboarding') document.getElementById('screen-onboarding').classList.add('active');
+  else if(dest==='app') document.getElementById('screen-app').classList.add('active');
 }
 
-function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-function closeModal(id,e) { if(!e||e.target===document.getElementById(id)) document.getElementById(id).classList.add('hidden'); }
+function authTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('form-login').classList.toggle('hidden', tab==='register');
+  document.getElementById('form-register').classList.toggle('hidden', tab==='login');
+}
 
-function switchTab(tab,tid) {
+function selectPlan(el) {
+  document.querySelectorAll('.plan-card').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── ONBOARDING STEPS ──
+function nextStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('onboard-step-'+i).classList.add('hidden');
+    const dot = document.getElementById('step-dot-'+i);
+    const lbl = document.getElementById('step-lbl-'+i);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active');
+    if(i < n){ dot.classList.add('done'); dot.innerHTML='<i class="ti ti-check" style="font-size:12px"></i>'; }
+    else if(i === n){ dot.classList.add('active'); dot.textContent=i; lbl.classList.add('active'); }
+    else { dot.textContent=i; }
+  });
+  document.getElementById('onboard-step-'+n).classList.remove('hidden');
+}
+
+function simulateQR() {
+  const dot = document.getElementById('qr-dot');
+  const lbl = document.getElementById('qr-label');
+  lbl.textContent = 'Conectando...';
+  setTimeout(() => {
+    dot.classList.add('connected');
+    lbl.textContent = '✓ WhatsApp conectado com sucesso!';
+    lbl.style.color = 'var(--success)';
+    setTimeout(() => nextStep(3), 1200);
+  }, 1800);
+}
+
+// ── APP NAV ──
+function navTo(view, el) {
+  document.querySelectorAll('[id^="view-"]').forEach(v => v.style.display='none');
+  const v = document.getElementById('view-'+view);
+  if(v) v.style.display='flex';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const titles = {dashboard:'Visão geral',funis:'Funis de recuperação',eventos:'Eventos Frendz',logs:'Log de disparos',config:'Configurações',planos:'Planos',guia:'Como funciona'};
+  document.getElementById('topbar-title').textContent = titles[view]||view;
+}
+
+function switchTab(tab, id) {
   const card = tab.closest('.card');
   card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active');
   card.querySelectorAll('[id^="tab-"]').forEach(p=>p.classList.add('hidden'));
-  document.getElementById(tid).classList.remove('hidden');
+  document.getElementById(id).classList.remove('hidden');
 }
 
-function copyVar(el) {
-  navigator.clipboard.writeText(el.textContent).catch(()=>{});
-  el.style.background='var(--success)'; el.style.color='#fff';
-  setTimeout(()=>{el.style.background='';el.style.color='';},800);
+function selectFunil(el) {
+  document.querySelectorAll('.funnel-row').forEach(f=>f.classList.remove('selected'));
+  el.classList.add('selected');
 }
 
-function selectFunil(el) { document.querySelectorAll('.funnel-item').forEach(f=>f.classList.remove('selected')); el.classList.add('selected'); }
-function toggleEvento(card) { const t=card.querySelector('.ev-toggle'); t.classList.toggle('on'); card.classList.toggle('on'); }
-function copyWebhook() { navigator.clipboard.writeText(document.getElementById('webhook-url-display').textContent).catch(()=>{}); alerta('webhook-result','URL copiada!','info'); }
+// ── MODALS ──
+function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id,e){ if(!e||e.target===document.getElementById(id)) document.getElementById(id).classList.add('hidden'); }
 
-function alerta(id,msg,tipo) {
-  const el=document.getElementById(id);
-  const cls={ok:'alert-ok',info:'alert-info',erro:'alert-erro'};
-  if(el) el.innerHTML=`<div class="alert ${cls[tipo]||'alert-info'}" style="margin-top:10px">${msg}</div>`;
+// ── MISC ──
+function syncData() {
+  const btn = document.querySelector('[onclick="syncData()"]');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="ti ti-refresh" style="animation:spin 1s linear infinite;display:inline-block"></i> Sincronizando...';
+  btn.disabled = true;
+  setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2000);
 }
 
-function dot(did,lid,ok,txt) {
-  const d=document.getElementById(did), l=document.getElementById(lid);
-  if(d) d.style.background=ok?'var(--success)':'var(--danger)';
-  if(l){l.textContent=txt; l.style.color=ok?'var(--success)':'var(--danger)';}
-}
-
-// ── SALVAR CONFIG ──
-function saveCredentials() {
-  sv('frendz_ep', document.getElementById('frendz-endpoint').value.trim());
-  sv('frendz_tk', document.getElementById('seller-token').value.trim());
-  alerta('frendz-test-result','Credenciais salvas!','ok');
-}
-function saveEvolution() {
-  sv('evo_url', document.getElementById('evo-url').value.trim());
-  sv('evo_key', document.getElementById('evo-key').value.trim());
-  sv('evo_inst', document.getElementById('evo-inst').value.trim());
-  alerta('evo-test-result','Evolution salva!','ok');
-}
-function saveN8n() {
-  const u=document.getElementById('n8n-url').value.trim();
-  sv('n8n_url',u);
-  if(u) document.getElementById('webhook-url-display').textContent=u;
-  alerta('frendz-test-result','URL n8n salva!','ok');
-}
-
-// ── TESTAR FRENDZ ──
-async function testCredentials() {
-  const tk=g('frendz_tk'), ep=g('frendz_ep')||'https://api.frendz.com.br/api';
-  if(!tk){alerta('frendz-test-result','Cole seu api_token primeiro','erro');return;}
-  alerta('frendz-test-result','<i class="ti ti-refresh spin"></i> Testando...','info');
-  try {
-    const r=await fetch(`${ep}/public/v1/me?api_token=${tk}`);
-    const d=await r.json();
-    if(r.ok&&(d.name||d.email)){
-      alerta('frendz-test-result',`✅ Conectado como: <strong>${d.name||d.email}</strong>`,'ok');
-      dot('dot-frendz','lbl-frendz',true,d.name||'conectado');
-    } else {
-      alerta('frendz-test-result',`❌ ${JSON.stringify(d).slice(0,120)}`,'erro');
-      dot('dot-frendz','lbl-frendz',false,'token inválido');
-    }
-  } catch(e){alerta('frendz-test-result',`❌ Erro de rede: ${e.message}`,'erro');dot('dot-frendz','lbl-frendz',false,'sem resposta');}
-}
-
-// ── TESTAR EVOLUTION ──
-async function testEvolution() {
-  const eu=g('evo_url'),ek=g('evo_key'),ei=g('evo_inst');
-  if(!eu||!ek){alerta('evo-test-result','Preencha URL e API Key','erro');return;}
-  alerta('evo-test-result','<i class="ti ti-refresh spin"></i> Testando...','info');
-  try {
-    const r=await fetch(`${eu}/instance/fetchInstances`,{headers:{apikey:ek}});
-    const d=await r.json();
-    if(r.ok){
-      const inst=Array.isArray(d)?d.find(i=>i.instance?.instanceName===ei):null;
-      const st=inst?.instance?.state||'desconhecida';
-      const ok=st==='open';
-      alerta('evo-test-result',ok?`✅ WhatsApp conectado — instância <strong>${ei}</strong>`:`⚠️ Instância "${ei}" status: <strong>${st}</strong>`,ok?'ok':'erro');
-      dot('dot-evo','lbl-evo',ok,ok?'conectado':st);
-    } else {alerta('evo-test-result',`❌ Erro ${r.status}`,'erro');dot('dot-evo','lbl-evo',false,`erro ${r.status}`);}
-  } catch(e){alerta('evo-test-result',`❌ ${e.message}`,'erro');dot('dot-evo','lbl-evo',false,'sem resposta');}
-}
-
-async function testarTodasConexoes() { await testCredentials(); await testEvolution(); }
-
-// ── TESTAR WEBHOOK ──
-async function testarWebhook() {
-  const url=g('n8n_url')||document.getElementById('webhook-url-display').textContent;
-  if(!url||url.includes('seu-servidor')){alerta('webhook-result','Configure a URL do n8n em Credenciais API','erro');return;}
-  alerta('webhook-result','<i class="ti ti-refresh spin"></i> Enviando payload de teste...','info');
-  const payload={payment_status:'waiting',payment_method:'pix',refuse_reason:null,
-    customer:{name:'Cliente Teste',email:'teste@frendz.com',phone_number:'11999999999'},
-    product:{title:'Produto Teste',hash:'teste123'},amount:9700,hash:'teste_'+Date.now()};
-  try {
-    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(r.ok){
-      alerta('webhook-result','✅ Payload enviado! Verifique no n8n se o workflow foi ativado.','ok');
-      dot('dot-n8n','lbl-n8n',true,'respondeu OK');
-      addLog('Cliente Teste','11999999999','waiting','Aguardando pagamento','Enviado');
-    } else {
-      alerta('webhook-result',`❌ n8n respondeu ${r.status} — verifique se o workflow está ativo e publicado`,'erro');
-      dot('dot-n8n','lbl-n8n',false,`status ${r.status}`);
-    }
-  } catch(e){alerta('webhook-result',`❌ ${e.message} — verifique a URL e se o n8n está rodando`,'erro');dot('dot-n8n','lbl-n8n',false,'sem resposta');}
-}
-
-// ── SINCRONIZAR FRENDZ ──
-async function syncFrendz() {
-  const tk=g('frendz_tk'), ep=g('frendz_ep')||'https://api.frendz.com.br/api';
-  if(!tk){alert('Configure seu api_token em Credenciais API primeiro.');setView('config',null);return;}
-  const btn=document.getElementById('btn-sync');
-  btn.innerHTML='<i class="ti ti-refresh spin"></i> Sincronizando...'; btn.disabled=true;
-  try {
-    const r=await fetch(`${ep}/public/v1/transactions?api_token=${tk}&page=1`);
-    if(!r.ok) throw new Error(`HTTP ${r.status}`);
-    const d=await r.json();
-    txAll=Array.isArray(d)?d:(d.data||d.transactions||[]);
-    renderTx(txAll);
-    renderOverview(txAll.slice(0,5));
-    const cnt={waiting:0,refused:0,processing:0,cancelled:0};
-    txAll.forEach(t=>{if(cnt[t.payment_status]!==undefined)cnt[t.payment_status]++;});
-    document.getElementById('stat-waiting').textContent=cnt.waiting;
-    document.getElementById('stat-refused').textContent=cnt.refused;
-    document.getElementById('stat-processing').textContent=cnt.processing;
-    document.getElementById('stat-cancelled').textContent=cnt.cancelled;
-    document.getElementById('stat-waiting-sub').textContent=`de ${txAll.length} total`;
-    const rec=Object.values(cnt).reduce((a,b)=>a+b,0);
-    document.getElementById('badge-tx').textContent=rec;
-    dot('dot-frendz','lbl-frendz',true,`${txAll.length} transações carregadas`);
-  } catch(e){alert('Erro: '+e.message);dot('dot-frendz','lbl-frendz',false,e.message);}
-  finally{btn.innerHTML='<i class="ti ti-refresh"></i> Sincronizar Frendz';btn.disabled=false;}
-}
-
-// ── RENDER ──
-function sbadge(s){const m={waiting:'<span class="tag tag-pix">waiting</span>',refused:'<span class="tag tag-card">refused</span>',processing:'<span class="tag tag-cart">processing</span>',cancelled:'<span class="tag tag-card">cancelled</span>',paid:'<span class="status-badge sb-enviado">pago</span>'};return m[s]||`<span class="tag">${s||'—'}</span>`;}
-function fmt(c){return c?'R$ '+(c/100).toFixed(2).replace('.',','):'—';}
-function fdt(dt){return dt?new Date(dt).toLocaleDateString('pt-BR'):'—';}
-
-function renderOverview(lista){
-  const tb=document.getElementById('tb-overview');
-  if(!lista.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Nenhuma transação</td></tr>';return;}
-  tb.innerHTML=lista.map(t=>{
-    const ts=JSON.stringify(t).replace(/"/g,'&quot;');
-    return `<tr class="tx-row-${t.payment_status}"><td>${t.customer?.name||'—'}</td><td style="font-size:12px">${t.cart?.[0]?.title||t.product?.title||'—'}</td><td>${fmt(t.amount)}</td><td>${sbadge(t.payment_status)}</td><td>${fdt(t.created_at)}</td><td><button class="btn btn-sm btn-primary" onclick='abrirDisparar(${ts})'><i class="ti ti-send"></i></button></td></tr>`;
-  }).join('');
-}
-
-function renderTx(lista){
-  const filtro=document.getElementById('filter-status')?.value||'';
-  const fl=filtro?lista.filter(t=>t.payment_status===filtro):lista;
-  const tb=document.getElementById('tb-transacoes');
-  if(!fl.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:20px">Nenhuma transação</td></tr>';return;}
-  const met=m=>m==='pix'?'PIX':m==='credit_card'?'Cartão':m||'—';
-  tb.innerHTML=fl.map(t=>{
-    const ts=JSON.stringify(t).replace(/"/g,'&quot;');
-    return `<tr class="tx-row-${t.payment_status}"><td>${t.customer?.name||'—'}</td><td style="font-size:11px">${t.customer?.email||'—'}</td><td>${t.customer?.phone_number||'—'}</td><td style="font-size:12px">${t.cart?.[0]?.title||t.product?.title||'—'}</td><td>${fmt(t.amount)}</td><td>${met(t.payment_method)}</td><td>${sbadge(t.payment_status)}</td><td>${fdt(t.created_at)}</td><td><button class="btn btn-sm btn-primary" onclick='abrirDisparar(${ts})'><i class="ti ti-send"></i> Disparar</button></td></tr>`;
-  }).join('');
-}
-function filtrarTransacoes(){renderTx(txAll);}
-
-// ── DISPARAR MANUAL ──
-function abrirDisparar(tx){
-  txAtual=tx;
-  document.getElementById('disparar-info').innerHTML=`<strong>${tx.customer?.name||'—'}</strong><br><span style="color:var(--text3);font-size:12px">${tx.cart?.[0]?.title||tx.product?.title||'—'} · ${fmt(tx.amount)} · ${tx.customer?.phone_number||'sem telefone'}</span>`;
-  document.getElementById('disparar-funil').value=tx.payment_status||'waiting';
-  document.getElementById('disparar-result').innerHTML='';
-  openModal('modal-disparar');
-}
-async function dispararFunil(){
-  if(!txAtual) return;
-  const url=g('n8n_url')||'https://automacao-n8n.7xsh2r.easypanel.host/webhook/frendz';
-  const status=document.getElementById('disparar-funil').value;
-  document.getElementById('disparar-result').innerHTML='<div class="alert" style="background:var(--accent-bg);color:var(--accent-text);margin-top:10px"><i class="ti ti-refresh spin"></i> Enviando para o n8n...</div>';
-  const payload={payment_status:status,payment_method:txAtual.payment_method||'pix',refuse_reason:txAtual.refuse_reason||null,customer:txAtual.customer||{},product:txAtual.cart?.[0]||txAtual.product||{},amount:txAtual.amount,hash:txAtual.hash};
-  try {
-    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(r.ok){document.getElementById('disparar-result').innerHTML='<div class="alert" style="background:var(--success-bg);color:var(--success-text);margin-top:10px">✅ Disparado! O n8n vai processar e enviar o WhatsApp conforme configurado.</div>';addLog(txAtual.customer?.name||'—',txAtual.customer?.phone_number||'—',status,'Manual','Enviado');}
-    else{document.getElementById('disparar-result').innerHTML=`<div class="alert" style="background:var(--danger-bg);color:var(--danger-text);margin-top:10px">❌ n8n respondeu ${r.status}</div>`;}
-  } catch(e){document.getElementById('disparar-result').innerHTML=`<div class="alert" style="background:var(--danger-bg);color:var(--danger-text);margin-top:10px">❌ ${e.message}</div>`;}
-}
-
-// ── LOG ──
-function addLog(nome,tel,evento,funil,status){
-  const tb=document.getElementById('tb-logs');
-  const vazia=tb.querySelector('td[colspan]'); if(vazia) tb.innerHTML='';
-  const sc=status==='Enviado'?'sb-enviado':status==='Erro'?'sb-erro':'sb-pendente';
-  const ic=status==='Enviado'?'ti-check':status==='Erro'?'ti-x':'ti-clock';
-  tb.insertAdjacentHTML('afterbegin',`<tr><td>${nome}</td><td>${tel}</td><td>${sbadge(evento)}</td><td>${funil}</td><td><span class="status-badge ${sc}"><i class="ti ${ic}"></i> ${status}</span></td><td>agora</td></tr>`);
-}
-
-// ── INIT ──
-(function init(){
-  const ep=g('frendz_ep'); if(ep&&document.getElementById('frendz-endpoint')) document.getElementById('frendz-endpoint').value=ep;
-  const tk=g('frendz_tk'); if(tk&&document.getElementById('seller-token')) document.getElementById('seller-token').value=tk;
-  const eu=g('evo_url'); if(eu&&document.getElementById('evo-url')) document.getElementById('evo-url').value=eu;
-  const ek=g('evo_key'); if(ek&&document.getElementById('evo-key')) document.getElementById('evo-key').value=ek;
-  const ei=g('evo_inst'); if(ei&&document.getElementById('evo-inst')) document.getElementById('evo-inst').value=ei;
-  const nu=g('n8n_url'); if(nu){if(document.getElementById('n8n-url')) document.getElementById('n8n-url').value=nu; document.getElementById('webhook-url-display').textContent=nu;}
-})();
-const style=document.createElement('style');style.textContent='@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}} .spin{animation:spin 1s linear infinite;display:inline-block} .alert{padding:10px 14px;border-radius:6px;font-size:12px} .alert-ok{background:var(--success-bg);color:var(--success-text);border:.5px solid var(--success)} .alert-erro{background:var(--danger-bg);color:var(--danger-text);border:.5px solid var(--danger)} .alert-info{background:var(--accent-bg);color:var(--accent-text);border:.5px solid var(--accent)} .tx-row-waiting td:first-child{border-left:3px solid var(--warning)} .tx-row-refused td:first-child{border-left:3px solid var(--danger)} .tx-row-processing td:first-child{border-left:3px solid var(--accent)} .tx-row-cancelled td:first-child{border-left:3px solid var(--text3)}';document.head.appendChild(style);
+const style = document.createElement('style');
+style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
 </script>
 </body>
 </html>
