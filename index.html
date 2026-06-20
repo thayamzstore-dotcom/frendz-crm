@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frendz Recovery</title>
+<title>Frendz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.14.0/dist/tabler-icons.min.css">
@@ -51,7 +51,8 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 #screen-auth::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,200,240,0.08) 0%, transparent 70%); top: -100px; left: 50%; transform: translateX(-50%); pointer-events: none; }
 .auth-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px; padding: 40px; width: 400px; position: relative; z-index: 1; }
 .auth-logo { text-align: center; margin-bottom: 32px; }
-.auth-logo .logo-mark { width: 48px; height: 48px; background: linear-gradient(135deg, #38c8f0, #1eb8e0); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 22px; }
+.auth-logo .logo-mark { width: 72px; height: 72px; background: linear-gradient(135deg, #38c8f0, #1eb8e0); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 13px; font-weight:600; color:#0a1a1f; cursor:pointer; overflow:hidden; position:relative; border:2px dashed rgba(56,200,240,0.4); transition:border-color 0.2s; }
+.auth-logo .logo-mark:hover { border-color: #38c8f0; }
 .auth-logo h1 { font-size: 20px; font-weight: 600; }
 .auth-logo p { font-size: 13px; color: var(--text2); margin-top: 4px; }
 .auth-tabs { display: flex; background: var(--bg3); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 28px; }
@@ -111,7 +112,8 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .sidebar { width: 240px; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; height: 100vh; position: sticky; top: 0; }
 .sidebar-top { padding: 20px 16px 16px; border-bottom: 1px solid var(--border); }
 .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.sidebar-logo .mark { width: 32px; height: 32px; background: linear-gradient(135deg, #38c8f0, #1eb8e0); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.sidebar-logo .mark { width: 32px; height: 32px; background: linear-gradient(135deg, #38c8f0, #1eb8e0); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight:600; color:#0a1a1f; flex-shrink: 0; cursor:pointer; overflow:hidden; border:1.5px dashed rgba(56,200,240,0.4); transition:border-color 0.2s; }
+.sidebar-logo .mark:hover { border-color: #38c8f0; }
 .sidebar-logo .name { font-weight: 600; font-size: 15px; }
 .sidebar-logo .tagline { font-size: 11px; color: var(--text3); }
 .seller-pill { display: flex; align-items: center; gap: 8px; background: var(--bg3); border-radius: var(--radius-sm); padding: 8px 10px; cursor: pointer; }
@@ -284,7 +286,10 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 <div id="screen-auth" class="screen active">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="logo-mark">⚡</div>
+      <div class="logo-mark" onclick="triggerLogoUpload()" title="Clique para adicionar seu logo">
+        <img id="auth-logo-img" src="" alt="Logo" style="width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0;border-radius:16px">
+        <span id="auth-logo-placeholder" style="display:flex;flex-direction:column;align-items:center;gap:3px"><i class="ti ti-photo" style="font-size:22px;color:#0a1a1f"></i><span style="font-size:10px">Adicionar logo</span></span>
+      </div>
       <h1 style="background:linear-gradient(90deg,#f2f2f5,#8a8a9a);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Frendz Recovery</h1>
       <p>Recuperação de vendas automatizada</p>
     </div>
@@ -444,7 +449,10 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="sidebar-logo">
-        <div class="mark">⚡</div>
+        <div class="mark" onclick="triggerLogoUpload()" title="Trocar logo">
+          <img id="sidebar-logo-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:7px">
+          <span id="sidebar-logo-placeholder"><i class="ti ti-photo" style="font-size:14px;color:#0a1a1f"></i></span>
+        </div>
         <div><div class="name" style="background:linear-gradient(90deg,#38c8f0,#5dd3f5);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Frendz Recovery</div></div>
       </div>
       <div class="seller-pill">
@@ -646,46 +654,80 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
               <div class="tab" onclick="switchTab(this,'tab-cfg')">Config</div>
             </div>
             <div id="tab-seq" class="card-body">
-              <div class="tl-vars" style="margin-bottom:16px">
-                <span class="tl-var">{{nome}}</span><span class="tl-var">{{produto}}</span><span class="tl-var">{{valor}}</span><span class="tl-var">{{pix_url}}</span>
+              <div style="margin-bottom:14px">
+                <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Clique em qualquer variável para inserir no texto:</p>
+                <div class="tl-vars">
+                  <span class="tl-var" onclick="insertVar('{{nome}}')">{{nome}}</span>
+                  <span class="tl-var" onclick="insertVar('{{produto}}')">{{produto}}</span>
+                  <span class="tl-var" onclick="insertVar('{{valor}}')">{{valor}}</span>
+                  <span class="tl-var" onclick="insertVar('{{pix_url}}')">{{pix_url}}</span>
+                  <span class="tl-var" onclick="insertVar('{{link_checkout}}')">{{link_checkout}}</span>
+                </div>
               </div>
-              <div class="timeline">
-                <div class="tl-step">
+              <div class="timeline" id="timeline-msgs">
+                <div class="tl-step" data-index="0">
                   <div class="tl-line"><div class="tl-dot">1</div><div class="tl-connector"></div></div>
                   <div class="tl-body">
                     <div class="tl-header">
                       <span class="tl-title">Mensagem 1</span>
-                      <span class="tl-timing"><i class="ti ti-clock"></i> Imediato</span>
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span class="tl-timing"><i class="ti ti-clock"></i> <span class="timing-label" onclick="editTiming(this)" style="cursor:pointer;text-decoration:underline dotted">Imediato</span></span>
+                        <button class="btn btn-ghost btn-sm" onclick="editMsg(this)" title="Editar"><i class="ti ti-edit"></i></button>
+                        <button class="btn btn-ghost btn-sm" onclick="deleteMsg(this)" title="Excluir" style="color:var(--danger)"><i class="ti ti-trash"></i></button>
+                      </div>
                     </div>
-                    <div class="tl-bubble">Oi {{nome}}! 👋 Vi que você tentou comprar {{produto}} mas o PIX ainda não foi pago.
+                    <div class="tl-bubble msg-text">Oi {{nome}}! 👋 Vi que você tentou comprar {{produto}} mas o PIX ainda não foi pago.
 
 Ainda dá tempo! Me responde aqui que te ajudo a finalizar. 😊</div>
+                    <textarea class="msg-edit hidden" rows="4" style="width:100%;background:var(--bg4);border:1px solid #38c8f0;border-radius:0 var(--radius-sm) var(--radius-sm) var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--text);font-family:inherit;outline:none;resize:vertical;line-height:1.6"></textarea>
+                    <div class="msg-edit-actions hidden" style="display:flex;gap:8px;margin-top:8px">
+                      <button class="btn btn-primary btn-sm" onclick="saveMsg(this)"><i class="ti ti-device-floppy"></i> Salvar</button>
+                      <button class="btn btn-ghost btn-sm" onclick="cancelMsg(this)">Cancelar</button>
+                    </div>
                   </div>
                 </div>
-                <div class="tl-step">
+                <div class="tl-step" data-index="1">
                   <div class="tl-line"><div class="tl-dot">2</div><div class="tl-connector"></div></div>
                   <div class="tl-body">
                     <div class="tl-header">
                       <span class="tl-title">Mensagem 2</span>
-                      <span class="tl-timing"><i class="ti ti-clock"></i> 1 hora depois</span>
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span class="tl-timing"><i class="ti ti-clock"></i> <span class="timing-label" onclick="editTiming(this)" style="cursor:pointer;text-decoration:underline dotted">1 hora depois</span></span>
+                        <button class="btn btn-ghost btn-sm" onclick="editMsg(this)" title="Editar"><i class="ti ti-edit"></i></button>
+                        <button class="btn btn-ghost btn-sm" onclick="deleteMsg(this)" title="Excluir" style="color:var(--danger)"><i class="ti ti-trash"></i></button>
+                      </div>
                     </div>
-                    <div class="tl-bubble">{{nome}}, seu acesso ao {{produto}} ainda está disponível! 🎯
+                    <div class="tl-bubble msg-text">{{nome}}, seu acesso ao {{produto}} ainda está disponível! 🎯
 
 Valor: R$ {{valor}} — posso te ajudar agora?</div>
+                    <textarea class="msg-edit hidden" rows="4" style="width:100%;background:var(--bg4);border:1px solid #38c8f0;border-radius:0 var(--radius-sm) var(--radius-sm) var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--text);font-family:inherit;outline:none;resize:vertical;line-height:1.6"></textarea>
+                    <div class="msg-edit-actions hidden" style="display:flex;gap:8px;margin-top:8px">
+                      <button class="btn btn-primary btn-sm" onclick="saveMsg(this)"><i class="ti ti-device-floppy"></i> Salvar</button>
+                      <button class="btn btn-ghost btn-sm" onclick="cancelMsg(this)">Cancelar</button>
+                    </div>
                   </div>
                 </div>
-                <div class="tl-step">
+                <div class="tl-step" data-index="2">
                   <div class="tl-line"><div class="tl-dot">3</div></div>
                   <div class="tl-body">
                     <div class="tl-header">
                       <span class="tl-title">Mensagem 3</span>
-                      <span class="tl-timing"><i class="ti ti-clock"></i> 3 horas depois</span>
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span class="tl-timing"><i class="ti ti-clock"></i> <span class="timing-label" onclick="editTiming(this)" style="cursor:pointer;text-decoration:underline dotted">3 horas depois</span></span>
+                        <button class="btn btn-ghost btn-sm" onclick="editMsg(this)" title="Editar"><i class="ti ti-edit"></i></button>
+                        <button class="btn btn-ghost btn-sm" onclick="deleteMsg(this)" title="Excluir" style="color:var(--danger)"><i class="ti ti-trash"></i></button>
+                      </div>
                     </div>
-                    <div class="tl-bubble">Última chance! ⏰ {{nome}}, me responde aqui que te ajudo pessoalmente! 💬</div>
+                    <div class="tl-bubble msg-text">Última chance! ⏰ {{nome}}, me responde aqui que te ajudo pessoalmente! 💬</div>
+                    <textarea class="msg-edit hidden" rows="4" style="width:100%;background:var(--bg4);border:1px solid #38c8f0;border-radius:0 var(--radius-sm) var(--radius-sm) var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--text);font-family:inherit;outline:none;resize:vertical;line-height:1.6"></textarea>
+                    <div class="msg-edit-actions hidden" style="display:flex;gap:8px;margin-top:8px">
+                      <button class="btn btn-primary btn-sm" onclick="saveMsg(this)"><i class="ti ti-device-floppy"></i> Salvar</button>
+                      <button class="btn btn-ghost btn-sm" onclick="cancelMsg(this)">Cancelar</button>
+                    </div>
                   </div>
                 </div>
-                <div class="tl-add"><button class="tl-add-btn" onclick="openModal('modal-msg')"><i class="ti ti-plus"></i> Adicionar mensagem</button></div>
               </div>
+              <div class="tl-add" style="margin-top:8px"><button class="tl-add-btn" onclick="addMsg()"><i class="ti ti-plus"></i> Adicionar mensagem</button></div>
             </div>
             <div id="tab-cfg" class="card-body hidden">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
@@ -1029,8 +1071,165 @@ function syncData() {
   setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2000);
 }
 
+// ── EDIÇÃO DE MENSAGENS ──
+let activeTextarea = null;
+
+function editMsg(btn) {
+  const body = btn.closest('.tl-body');
+  const bubble = body.querySelector('.msg-text');
+  const textarea = body.querySelector('.msg-edit');
+  const actions = body.querySelector('.msg-edit-actions');
+  textarea.value = bubble.textContent;
+  bubble.classList.add('hidden');
+  textarea.classList.remove('hidden');
+  actions.style.display = 'flex';
+  actions.classList.remove('hidden');
+  textarea.focus();
+  activeTextarea = textarea;
+}
+
+function saveMsg(btn) {
+  const body = btn.closest('.tl-body');
+  const bubble = body.querySelector('.msg-text');
+  const textarea = body.querySelector('.msg-edit');
+  const actions = body.querySelector('.msg-edit-actions');
+  bubble.textContent = textarea.value;
+  bubble.classList.remove('hidden');
+  textarea.classList.add('hidden');
+  actions.style.display = 'none';
+  activeTextarea = null;
+  showToast('Mensagem salva!');
+}
+
+function cancelMsg(btn) {
+  const body = btn.closest('.tl-body');
+  const bubble = body.querySelector('.msg-text');
+  const textarea = body.querySelector('.msg-edit');
+  const actions = body.querySelector('.msg-edit-actions');
+  bubble.classList.remove('hidden');
+  textarea.classList.add('hidden');
+  actions.style.display = 'none';
+  activeTextarea = null;
+}
+
+function deleteMsg(btn) {
+  const step = btn.closest('.tl-step');
+  if(document.querySelectorAll('#timeline-msgs .tl-step').length <= 1) {
+    showToast('O funil precisa ter pelo menos 1 mensagem.', true); return;
+  }
+  step.style.opacity = '0'; step.style.transform = 'translateX(-10px)'; step.style.transition = 'all 0.25s';
+  setTimeout(() => { step.remove(); renumberMsgs(); }, 250);
+}
+
+function renumberMsgs() {
+  document.querySelectorAll('#timeline-msgs .tl-step').forEach((s, i) => {
+    s.querySelector('.tl-dot').textContent = i + 1;
+    s.querySelector('.tl-title').textContent = 'Mensagem ' + (i + 1);
+    const conn = s.querySelector('.tl-connector');
+    const isLast = i === document.querySelectorAll('#timeline-msgs .tl-step').length - 1;
+    if(conn) conn.style.display = isLast ? 'none' : 'block';
+  });
+}
+
+function addMsg() {
+  const timeline = document.getElementById('timeline-msgs');
+  const steps = timeline.querySelectorAll('.tl-step');
+  const n = steps.length + 1;
+  const prev = steps[steps.length - 1];
+  if(prev) { const conn = prev.querySelector('.tl-connector'); if(conn) conn.style.display = 'block'; }
+  const div = document.createElement('div');
+  div.className = 'tl-step';
+  div.setAttribute('data-index', n - 1);
+  div.style.opacity = '0'; div.style.transform = 'translateY(8px)';
+  div.innerHTML = `
+    <div class="tl-line"><div class="tl-dot">${n}</div></div>
+    <div class="tl-body">
+      <div class="tl-header">
+        <span class="tl-title">Mensagem ${n}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="tl-timing"><i class="ti ti-clock"></i> <span class="timing-label" onclick="editTiming(this)" style="cursor:pointer;text-decoration:underline dotted">Escolher tempo</span></span>
+          <button class="btn btn-ghost btn-sm" onclick="editMsg(this)"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="deleteMsg(this)" style="color:var(--danger)"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="tl-bubble msg-text" style="color:var(--text3);font-style:italic">Clique em editar para escrever a mensagem...</div>
+      <textarea class="msg-edit hidden" rows="4" style="width:100%;background:var(--bg4);border:1px solid #38c8f0;border-radius:0 var(--radius-sm) var(--radius-sm) var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--text);font-family:inherit;outline:none;resize:vertical;line-height:1.6"></textarea>
+      <div class="msg-edit-actions hidden" style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-primary btn-sm" onclick="saveMsg(this)"><i class="ti ti-device-floppy"></i> Salvar</button>
+        <button class="btn btn-ghost btn-sm" onclick="cancelMsg(this)">Cancelar</button>
+      </div>
+    </div>`;
+  timeline.appendChild(div);
+  requestAnimationFrame(() => { div.style.transition = 'all 0.25s'; div.style.opacity = '1'; div.style.transform = 'none'; });
+  setTimeout(() => editMsg(div.querySelector('[onclick^="editMsg"]')), 300);
+}
+
+function editTiming(span) {
+  const options = ['Imediato','5 minutos depois','15 minutos depois','30 minutos depois','1 hora depois','2 horas depois','3 horas depois','6 horas depois','12 horas depois','24 horas depois'];
+  const sel = document.createElement('select');
+  sel.style.cssText = 'background:var(--bg4);border:1px solid #38c8f0;border-radius:4px;padding:3px 8px;font-size:12px;color:var(--text);font-family:inherit;outline:none';
+  options.forEach(o => { const opt = document.createElement('option'); opt.value = o; opt.textContent = o; if(o === span.textContent) opt.selected = true; sel.appendChild(opt); });
+  sel.onchange = () => { span.textContent = sel.value; sel.replaceWith(span); showToast('Tempo atualizado!'); };
+  sel.onblur = () => sel.replaceWith(span);
+  span.replaceWith(sel); sel.focus();
+}
+
+function insertVar(v) {
+  if(activeTextarea) {
+    const s = activeTextarea.selectionStart, e = activeTextarea.selectionEnd;
+    activeTextarea.value = activeTextarea.value.slice(0,s) + v + activeTextarea.value.slice(e);
+    activeTextarea.selectionStart = activeTextarea.selectionEnd = s + v.length;
+    activeTextarea.focus();
+  } else { showToast('Clique em Editar em uma mensagem primeiro.', true); }
+}
+
+
+// ── LOGO UPLOAD ──
+function triggerLogoUpload() {
+  let inp = document.getElementById('global-logo-input');
+  if (!inp) {
+    inp = document.createElement('input');
+    inp.type = 'file'; inp.id = 'global-logo-input';
+    inp.accept = 'image/*'; inp.style.display = 'none';
+    inp.onchange = handleLogoUpload;
+    document.body.appendChild(inp);
+  }
+  inp.click();
+}
+
+function handleLogoUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const src = ev.target.result;
+    // Auth screen
+    const authImg = document.getElementById('auth-logo-img');
+    const authPh = document.getElementById('auth-logo-placeholder');
+    if (authImg) { authImg.src = src; authImg.style.display = 'block'; }
+    if (authPh) authPh.style.display = 'none';
+    // Sidebar
+    const sideImg = document.getElementById('sidebar-logo-img');
+    const sidePh = document.getElementById('sidebar-logo-placeholder');
+    if (sideImg) { sideImg.src = src; sideImg.style.display = 'block'; }
+    if (sidePh) sidePh.style.display = 'none';
+    showToast('Logo atualizado!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── TOAST ──
+function showToast(msg, err=false) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `position:fixed;bottom:28px;right:28px;z-index:999;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:500;background:${err?'var(--danger-bg)':'var(--success-bg)'};color:${err?'var(--danger)':'var(--success)'};border:1px solid ${err?'rgba(240,82,82,0.3)':'rgba(34,201,138,0.3)'};box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:all 0.3s;opacity:0;transform:translateY(8px)`;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.opacity='1'; t.style.transform='none'; });
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; setTimeout(()=>t.remove(),300); }, 2500);
+}
+
 const style = document.createElement('style');
-style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}} .hidden{display:none!important}';
 document.head.appendChild(style);
 </script>
 </body>
